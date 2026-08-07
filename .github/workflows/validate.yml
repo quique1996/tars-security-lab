@@ -1,0 +1,43 @@
+name: Validate Evidence and Reports
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check evidence READMEs
+        run: |
+          set -e
+          for d in evidence/*/; do
+            if [ ! -f "$d/README.md" ]; then
+              echo "FAIL: $d missing README.md"
+              exit 1
+            fi
+            echo "OK: $d has README.md"
+          done
+
+      - name: Check README structure
+        run: |
+          set -e
+          [ -f README.md ] || { echo "FAIL: no README.md"; exit 1; }
+          grep -q "## Lab Infrastructure" README.md || { echo "FAIL: README missing Lab Infrastructure section"; exit 1; }
+          grep -q "## Red Team Tools" README.md || { echo "FAIL: README missing Red Team Tools section"; exit 1; }
+          echo "README structure OK"
+
+      - name: Secret scan
+        run: |
+          set -e
+          if grep -rniE "api[_-]?key|password|token|secret" evidence/ --include="*.md" | grep -vE "requires|api key providers|API_KEY=|not required|no credentials|default"; then
+            echo "WARN: possible credential mentions in evidence"
+          fi
+          echo "Secret scan complete"
+
+      - name: Summary
+        run: echo "validated"
