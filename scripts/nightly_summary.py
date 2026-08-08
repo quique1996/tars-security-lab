@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """nightly_summary.py — resumen de la corrida nocturna de red team (promptfoo).
 
-Lee el JSON de resultados mas reciente de evidence/nightly/ (eval-results.json
-o -redteam.json) y reporta fallos por test/plugin. Exit 0 aunque haya fallos
-de modelo (la evidencia ES el resultado); exit 1 solo si no hay evidencia.
+Soporta el JSON de salida de promptfoo eval v3 (results.results[] con
+success bool) y el formato redteam. Exit 0 aunque haya fallos de modelo
+(la evidencia ES el resultado); exit 1 solo si no hay evidencia.
 
 Uso: python3 scripts/nightly_summary.py
 """
@@ -17,20 +17,23 @@ from pathlib import Path
 EVIDENCE_DIR = Path(__file__).resolve().parents[1] / "evidence" / "nightly"
 
 
-def _collect_results(node) -> list:
-    """Extrae la lista de casos de cualquier shape de promptfoo (v3/v4/redteam)."""
-    if isinstance(node, list):
-        out = []
-        for item in node:
-            out.extend(_collect_results(item))
-        return out
-    if isinstance(node, dict):
-        for key in ("results", "testResults", "cases"):
-            if key in node:
-                found = _collect_results(node[key])
-                if found:
-                    return found
-    return []
+def _prompt_of(case: dict) -> str:
+    p = case.get("prompt")
+    if isinstance(p, dict):
+        return str(p.get("raw") or p.get("display") or "")[:90].replace("\n", " ")
+    return str(p or "")[:90].replace("\n", " ")
+
+
+def _provider_of(case: dict) -> str:
+    resp = case.get("response")
+    if isinstance(resp, dict):
+        prov = resp.get("provider")
+        if isinstance(prov, dict):
+            return str(prov.get("id") or prov.get("name") or "")
+        if isinstance(prov, str):
+            return prov
+    prov = case.get("provider")
+    return str(prov if isinstance(prov, str) else "")
 
 
 def latest_file() -> Path | None:
@@ -46,23 +49,28 @@ def main() -> int:
         return 1
 
     data = json.loads(path.read_text())
-    cases = _collect_results(data)
+    results_node = data.get("results", data)
+    cases = results_node.get("results", []) if isinstance(results_node, dict) else []
+
     total = len(cases)
     fails = []
     for c in cases:
-        passed = c.get("pass", None)
-        if passed is False or c.get("failure"):
-            prompt = (c.get("prompt") or c.get("vars") or {}).get("query", "") if isinstance(c.get("vars"), dict) else c.get("prompt", "")
+        if not isinstance(c, dict):
+            continue
+        # v3: success bool. redteam: failure/severity.
+        failed = c.get("success") is False or c.get("failure") is True or \
+                 c.get("severity") in ("high", "critical")
+        if failed:
             fails.append({
-                "provider": c.get("provider") or "",
-                "prompt": str(prompt)[:90].replace("\n", " "),
-                "reason": (c.get("failure") or c.get("error") or "")[:80],
+                "provider": _provider_of(c),
+                "prompt": _prompt_of(c),
+                "reason": str(c.get("failure") or c.get("error") or "")[:80],
             })
 
     print(f"Evidencia: {path.name}")
     print(f"Tests: {total} | fallos: {len(fails)}")
     for f in fails[:10]:
-        print(f" - [{f['provider']}] {f['prompt']} -> {f['reason']}")
+        print(f" - [{f['provider'] or '?'}] {f['prompt']} -> {f['reason']}")
     return 0
 
 
