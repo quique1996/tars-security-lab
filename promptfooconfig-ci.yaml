@@ -15,7 +15,7 @@ providers:
       host: http://localhost:11434
   - id: ollama:ornith:9b
     config:
-      host: http://localhost:11434
+      host: http://100.90.88.5:11434   # Mini M4 (Metal, 17 tok/s) — nodo LLM dedicado
 
 tests:
   - vars:
