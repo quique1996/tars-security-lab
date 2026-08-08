@@ -1,0 +1,17 @@
+<!-- Sigma-style Wazuh rules (Bloque 4 plan 8h) -->
+<!-- Regla 1: detecta tool-call con destino externo no permitido -->
+<group name="mcp_redteam,">
+  <rule id="100501" level="12">
+    <field name="mcp.tool.name">\.+</field>
+    <field name="mcp.tool.args">https?://(?!100\.123\.17\.12|100\.90\.88\.5|127\.0\.0\.1)</field>
+    <description>MCP tool-call con destino externo no permitido (posible tool-hijack)</description>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+
+  <rule id="100502" level="10">
+    <match>mcp-toolhijack-poc|tool-call-hijack|malicious_prompt</match>
+    <description>Actividad de red-team MCP detectada en logs (POC ejecutada)</description>
+  </rule>
+</group>
