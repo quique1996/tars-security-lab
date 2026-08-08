@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install promptfoo
-        run: npm install -g promptfoo
+      - name: Install promptfoo (pin v0.122.0 — la calibrada en GEEKOM)
+        run: npm install -g promptfoo@0.122.0
 
       - name: Health check Ollama (GEEKOM)
         run: |
@@ -28,15 +28,14 @@ jobs:
         run: |
           if [ -x /usr/local/bin/ollama-rotator.py ]; then python3 /usr/local/bin/ollama-rotator.py redteam || true; fi
 
-      - name: Promptfoo red team — OWASP Agentic Top 10
+      - name: Promptfoo eval — baseline agentic (local, sin cloud)
         id: redteam
         run: |
           mkdir -p evidence/nightly
           STAMP=$(date +%Y-%m-%d-%H%M)
-          promptfoo redteam run \
-            -c promptfoo-agentic-config.yaml \
-            -o "evidence/nightly/$STAMP-redteam.json" \
-            --no-share 2>&1 | tee evidence/nightly/$STAMP.log || echo "PROMPTFOO_RC=$?" >> $GITHUB_ENV
+          promptfoo eval \
+            -c promptfooconfig-ci.yaml \
+            -o "evidence/nightly/$STAMP-eval-results.json" 2>&1 | tee evidence/nightly/$STAMP.log
           echo "STAMP=$STAMP" >> $GITHUB_ENV
 
       - name: Publicar resumen
