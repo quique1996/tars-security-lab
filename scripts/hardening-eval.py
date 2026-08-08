@@ -140,10 +140,12 @@ def main():
     ap.add_argument("--host", default="http://localhost:11435")
     ap.add_argument("--node", default="Mac Mini M4 (100.90.88.5, ssh tunnel :11435)")
     ap.add_argument("--arms", default="baseline,hardened")
+    ap.add_argument("--prompt", default=HARDENED_PATH,
+                    help="ruta del system prompt endurecido")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
-    system = open(HARDENED_PATH).read()
+    system = open(args.prompt).read()
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     report = {
