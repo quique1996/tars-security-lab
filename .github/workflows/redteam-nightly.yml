@@ -1,0 +1,71 @@
+name: redteam-nightly
+
+on:
+  schedule:
+    - cron: '30 5 * * *'   # 05:30 CST — fuera de las ventanas de backup/rotator
+  workflow_dispatch:
+
+jobs:
+  promptfoo-agentic:
+    runs-on: self-hosted   # runner GEEKOM (alcanza Ollama local en localhost:11434)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install promptfoo
+        run: npm install -g promptfoo
+
+      - name: Health check Ollama (GEEKOM)
+        run: |
+          curl -s -m 10 http://localhost:11434/api/tags > /tmp/ollama_tags.json || { echo "Ollama DOWN en runner"; exit 1; }
+          python3 -c "import json; d=json.load(open('/tmp/ollama_tags.json')); names=[m['name'] for m in d['models']]; assert any('qwen3' in n for n in names), 'qwen3:8b faltante'; print('Ollama OK:', names)"
+
+      - name: Rotator al perfil redteam (descarga llama3.2:3b/qwen3:8b, no carga RAM)
+        run: |
+          if [ -x /usr/local/bin/ollama-rotator.py ]; then python3 /usr/local/bin/ollama-rotator.py redteam || true; fi
+
+      - name: Promptfoo red team — OWASP Agentic Top 10
+        id: redteam
+        run: |
+          mkdir -p evidence/nightly
+          STAMP=$(date +%Y-%m-%d-%H%M)
+          promptfoo redteam run \
+            -c promptfoo-agentic-config.yaml \
+            -o "evidence/nightly/$STAMP-redteam.json" \
+            --no-share 2>&1 | tee evidence/nightly/$STAMP.log || echo "PROMPTFOO_RC=$?" >> $GITHUB_ENV
+          echo "STAMP=$STAMP" >> $GITHUB_ENV
+
+      - name: Publicar resumen (plugin osv-scanner style)
+        run: |
+          STAMP="${{ env.STAMP }}"
+          if [ -f "evidence/nightly/$STAMP-redteam.json" ]; then
+            python3 - <<'EOF'
+            import json, glob
+            files = sorted(glob.glob('evidence/nightly/*-redteam.json'))
+            if not files:
+                print("Sin resultados")
+                raise SystemExit(0)
+            d = json.load(open(files[-1]))
+            plugins = d.get("results", d if isinstance(d, list) else [])
+            # promptfoo output: {"results": [...]} con severity/failure
+            if isinstance(plugins, dict):
+                plugins = plugins.get("results", [])
+            n = len(plugins)
+            fails = [p for p in plugins if p.get("failure") or p.get("severity") in ("high", "critical")]
+            print(f"Resultados: {n} | fallos: {len(fails)}")
+            for f in fails[:8]:
+                print(" -", f.get("pluginId") or f.get("id"), "|", f.get("severity"), "|", (f.get("prompt") or "")[:80])
+            EOF
+          fi
+
+      - name: Commit evidencia
+        run: |
+          git config user.name "tars-redteam-bot"
+          git config user.email "redteam@tars.local"
+          git add evidence/nightly/ || true
+          git commit -m "Nightly red team evidence $(date +%F)" || echo "nada nuevo que commitear"
+          git push origin HEAD || echo "push fallo (runner sin credenciales — verificar gh auth)"
