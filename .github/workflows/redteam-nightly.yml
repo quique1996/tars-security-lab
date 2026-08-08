@@ -33,9 +33,16 @@ jobs:
         run: |
           mkdir -p evidence/nightly
           STAMP=$(date +%Y-%m-%d-%H%M)
+          # 1 provider por invocacion (qwen3 y ornith alternados = recargas 8-9B en 16GB -> thrash).
+          # Primero el vulnerable, luego el control.
           promptfoo eval \
             -c promptfooconfig-ci.yaml \
-            -o "evidence/nightly/$STAMP-eval-results.json" 2>&1 | tee evidence/nightly/$STAMP.log
+            --providers ollama:qwen3:8b \
+            -o "evidence/nightly/$STAMP-qwen3-eval-results.json" 2>&1 | tee evidence/nightly/$STAMP-qwen3.log
+          promptfoo eval \
+            -c promptfooconfig-ci.yaml \
+            --providers ollama:ornith:9b \
+            -o "evidence/nightly/$STAMP-ornith-eval-results.json" 2>&1 | tee evidence/nightly/$STAMP-ornith.log
           echo "STAMP=$STAMP" >> $GITHUB_ENV
 
       - name: Publicar resumen
