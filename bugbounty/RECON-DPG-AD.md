@@ -31,11 +31,27 @@ STATUS 200 en todos los targets (WAF acepta tráfico de browser legítimo).
 
 ### Vectores priorizados (mapeados a severity DPG)
 - IDOR numérico en APIs de account/carrito (Critical si mass)
+- **IDOR en `authId` UUID del endpoint /api/consent** (Técnica fundamentada 2025-2026):
+  - "Sandwich attack" (dev.to/mohamed_aboelkheir): si el UUID no es v4 aleatorio sino v1 (timestamp+MAC), es predecible → enumeración real → eleva UUID IDOR de Low a Critical.
+  - Probar: cambiar `authId` por otro UUID generado cercano en tiempo; si la API devuelve consent state de OTRO usuario → IDOR cross-user.
+  - `readOnly=false` → ¿se puede ESCRIBIR/modificar consent de otro usuario? (privesc de estado).
+- **SSRF/Open Redirect vía `siteUrl`**: si el backend usa `siteUrl` para fetch/server-side render sin validación estricta de host → SSRF a metadata cloud (Critical si impacto) u open redirect (Low). Verificar que no caiga en out-of-scope privacy endpoints.
+- **CORS misconfig** en /api/consent y /api/metrics (Intigriti blog "Exploiting CORS"): si reflejan `Origin` con `Access-Control-Allow-Credentials: true` → robo de respuesta con token de víctima.
+- **`/api/metrics` (pg.dpgmedia.net)**: excessive data exposure — ¿filtra PII en payload? ¿acepta POST sin auth?
 - Auth bypass en flujo myaccount (vertical High)
 - Stored XSS en webwinkel (High, área no excluida)
 - SQLi en parámetros de búsqueda/filtro (Critical)
 - Path traversal en descargas (Critical)
 - SSRF con impacto (metadata cloud) — blind sin impacto = out
+
+### Checklist manual (con header Intigriti, rate 5 req/seg, SIN scanners)
+1. GET `/api/consent?authId=<propio>` → capturar respuesta (estado consent).
+2. Repetir con `authId` de otro usuario (generado/observado) → ¿devuelve datos ajenos? (IDOR).
+3. POST `/api/consent` con `readOnly=false` y `authId` ajeno → ¿escribe estado ajeno? (privesc).
+4. Manipular `siteUrl` a `http://169.254.169.254/` → ¿SSRF? (solo si impacto real).
+5. Enviar `Origin: https://evil.com` → ¿CORS refleja con credentials? (si sí, documentar PoC).
+6. Inspeccionar headers de respuesta en `/api/metrics` → ¿leaks de PII/token?
+7. Verificar duplicado: buscar mismo patrón en volkskrant.nl/parool.nl antes de submit.
 
 ### Red flags de duplicado (DPG comparte codebase)
 - Mismo bug en Volkskrant/Parool/Trouw/dpgmedia.nl = duplicado
