@@ -1,6 +1,6 @@
 # Reporte Template — Bug Bounty (mrpuff0420)
 
-Programa: [DPG/AD | Aikido | BMW | Ubisoft]
+Programa: [DPG/AD | Aikido]
 Fecha: 2026-08-08
 Severity (CVSS): [ ]
 
