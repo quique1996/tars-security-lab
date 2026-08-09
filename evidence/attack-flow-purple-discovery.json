@@ -1,0 +1,60 @@
+{
+  "id": "flow--tars-purple-discovery-20260809",
+  "type": "flow",
+  "name": "Caldera Discovery Operation — TARS Lab",
+  "description": "Flujo de ataque de la operacion Discovery de Caldera contra el agente sandcat (ceewjl) en el host fedora. 6 tecnicas ejecutadas, 1 detectada por Wazuh (T1057).",
+  "start": "node--1",
+  "nodes": [
+    {
+      "id": "node--1",
+      "type": "node",
+      "name": "Initial Access: Sandcat Agent Deployed",
+      "technique": "T1105",
+      "description": "Agente sandcat desplegado en el host fedora (GEEKOM) via Caldera C2",
+      "assets": ["host--fedora"]
+    },
+    {
+      "id": "node--2",
+      "type": "node",
+      "name": "Discovery: Identify Active User",
+      "technique": "T1033",
+      "description": "whoami / id -u — regla Wazuh 100600 desplegada (deteccion parcial)",
+      "assets": ["host--fedora"]
+    },
+    {
+      "id": "node--3",
+      "type": "node",
+      "name": "Discovery: Find Local Users",
+      "technique": "T1033",
+      "description": "cat /etc/passwd — regla Wazuh 100602 desplegada",
+      "assets": ["host--fedora"]
+    },
+    {
+      "id": "node--4",
+      "type": "node",
+      "name": "Discovery: Find User Processes",
+      "technique": "T1057",
+      "description": "ps aux — DETECTADO por regla Wazuh 100601 (purple loop cerrado)",
+      "assets": ["host--fedora"]
+    },
+    {
+      "id": "node--5",
+      "type": "node",
+      "name": "Detection: Wazuh Alert 100601",
+      "technique": "T1057",
+      "description": "Wazuh genero alerta level 8: MITRE T1057 Process Discovery — cobertura 0% -> medible",
+      "assets": ["host--wazuh-manager"]
+    }
+  ],
+  "links": [
+    { "id": "link--1", "type": "link", "source": "node--1", "target": "node--2", "description": "post-exploitation" },
+    { "id": "link--2", "type": "link", "source": "node--2", "target": "node--3", "description": "user discovery" },
+    { "id": "link--3", "type": "link", "source": "node--3", "target": "node--4", "description": "process discovery" },
+    { "id": "link--4", "type": "link", "source": "node--4", "target": "node--5", "description": "DETECTED by Wazuh" }
+  ],
+  "metadata": {
+    "created": "2026-08-09",
+    "source": "Caldera operation purple-discovery-r2-20260809 (be93804a)",
+    "coverage": "1/6 techniques detected"
+  }
+}
