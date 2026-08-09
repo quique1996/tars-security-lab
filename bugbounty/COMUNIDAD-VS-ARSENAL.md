@@ -6,29 +6,35 @@
 - **Manual > scanners**: HackerOne/Intigriti prohíben scanners en la mayoría. El valor está en lógica de negocio que automatización no ve.
 - **Reporting**: PoC reproducible impreso en papel, attack scenario, impact, recommended fix. Intigriti exige CVSS + scope validation assistant.
 
-## 2. Blogs / writeups reales recientes (técnica clave)
-- **IDOR → ATO ($500)**: cambiar `id` en request de verificación de teléfono/email; server acepta datos de otra cuenta sin re-validar. (infosecwriteups, Sep 2025)
-- **Logic flaw → total control**: manipular `email` en request de perfil; 200 OK pero no aplica → luego login con email cambiado = takeover. (Synack / krishna kumar 2026)
-- **SSRF 5 técnicas 1 bug**: mismo endpoint explotado vía cloud metadata, URL parse, redirect, DNS rebinding, PDF gen. (medium oksuzkayra16)
-- **2FA bypass ($6000)**: tras login válido, response manipulation / OTP step skippable → acceso sin segundo factor. (mokhansec)
-- **XSS $350/15min**: param `name` en `/profile?name=<img src=1 onerror=alert(1337)>` reflected. (infosecwriteups)
-- **SQLi**: UNION-based para schema leak; WAF bypass con comentarios/encoding. (NiaziSec / Intigriti SQLi blog Apr 2026)
-- **Race condition**: Turbo Intruder / parallel requests para bypass limits, duplicar transacciones. (YesWeHack race guide)
-- **GraphQL**: introspection + batching queries; BatchQL (assetnote). (assetnote.io)
+## 2. Blogs / writeups reales recientes (técnica clave) — [fuentes verificadas]
+- **IDOR billing** — POST a endpoint de billing revela datos de otros usuarios; UUID no valida contexto. (infosecwriteups how-i-found-a-idor-issue-in-5-mins)
+- **SSRF 5 bypasses** — redirect, 169.254.169.254 metadata AWS, Collaborator, DNS rebind, PDF gen. (medium/@oksuzkayra16 five-bounties-one-bug)
+- **2FA bypass response manipulation** — cambiar `"success":false`→`true` / forzar 200 en respuesta OTP. (medium/@0mex; $6000: mokhansec bypassing-2fa)
+- **Blind XSS → RCE** — payload en header (User-Agent/X-Forwarded) ejecuta en panel admin interno. (is4curity from-blind-xss-to-rce)
+- **Race condition single-packet** — Turbo Intruder Engine.BURP2 para precio/rate-limit/ATO. (YesWeHack race guide)
+- **SQLi legacy** — 1213 SQLi pagados en HackerOne 2025 (~$1074/reporte); vivo en params legacy. (Reddit/HackerOne data)
+- **IDOR→ATO** — cambiar `id` en request de verificación sin re-validar. (infosecwriteups)
+- **Logic flaw→takeover** — manipular `email` en perfil; 200 pero no aplica → login con email cambiado. (Synack)
+- **XSS $350/15min** — `?name=<img src=1 onerror=alert(1337)>` reflected. (infosecwriteups)
 
-## 3. Canales / videos (qué enseñan)
-- **NahamSec**: recon-driven hunting, live streams, scope selection, "The No BS Roadmap". Free recon course.
-- **STÖK**: metodología moderna recon + tooling (ffuf/ParamMiner style, subdomain enum).
-- **InsiderPHD (Katie)**: on-ramp limpio a vuln classes reales a ritmo beginner.
-- **The XSS Rat**: web-app vuln classes + reporting craft.
-- **AssetNote**: GraphQL/param mining técnicas profundas.
-- **Intigriti BugQuest 2026**: 31 días de Broken Access Control (API doc mining, 3rd-party intel, UUID/v1, IDOR).
+## 3. Canales / videos — qué enseñan [fuentes]
+- **NahamSec / Jason Haddix**: recon wide-scope, automatización, content discovery ("efficiency pays"). (youtube krCsMZfbuB4)
+- **AssetNote**: GraphQL introspection + batching (BatchQL), attack surface. (assetnote.io exploiting-graphql)
+- **TheXSSRat**: metodología end-to-end 2026 por clase de vuln; XSS stored/blind/DOM.
+- **Prototype pollution**: detección manual + automatización. (youtube em1QOZvN4M8)
+- **Param Miner (Burp)**: parámetros ocultos + cache poisoning. (nahamsec Resources-for-Beginner-Bug-Bounty-Hunters)
+- **Intigriti BugQuest 2026**: 31 días Broken Access Control (API doc mining, 3rd-party intel, UUIDv1, IDOR).
+- **InsiderPHD**: on-ramp limpio a vuln classes reales.
 
-## 4. Nuestro arsenal actual (lo que YA tenemos)
-- KG 6029 puntos, catalogos TTPs (XSS/SQLi/chains), RoE DPG/Aikido, flujo operativo.
-- Lab Juice Shop: IDOR/BOLA, SQLi UNION, XSS stored/reflected, CSRF, GraphQL training, 8 chains.
-- Scripts GEEKOM: recon_browser (Playwright, pasa Akamai), manual_probe, juice_*, analyze_js (703 endpoints Aikido).
-- Programas: DPG/AD (web clásica, SQLi=Critical, XSS=High, NO scanners), Aikido (SaaS BOLA/IDOR/SSRF), HubSpot (HackerOne, CRM cross-portal, CTF $20k).
+## 4. Nuestro arsenal vs comunidad (veredicto del análisis)
+- **Ya cubrimos BIEN** (Juice Shop + KG 6029 + TTPs): IDOR/BOLA, SQLi, XSS reflejado, CSRF, GraphQL training, chains, recon_browser/manual_probe. Alinea con DPG (SQLi Critical, XSS High) y Aikido (BOLA/IDOR/SSRF).
+- **GAP REAL**: no es la *clase* de vuln (eso lo dominamos en lab), sino las **técnicas de descubrimiento/bypass en la wild**:
+  - Recon activo real: param mining (Param Miner style), wayback/gau, content discovery a escala → clave para wildcard DPG.
+  - Auth/2FA bypass por response manipulation (200/`success:true`) → no está en training.
+  - Race condition single-packet (Turbo Intruder) → directo a SaaS Aikido.
+  - SSRF a metadata cloud (169.254.169.254) + bypasses → core Aikido SSRF.
+  - Blind XSS out-of-band (headers, campos admin) → más realista que reflejado de lab.
+  - Otros no tocados: JWT en la wild, subdomain takeover, cache poisoning real, prototype pollution, POST-based XSS, multipart/content-type bypass.
 
 ## 5. GAPS de práctica (comunidad usa, nosotros NO hemos tocado)
 1. **Param mining SPA-aware**: content-length total no sirve en SPAs (probado: baseline 7.8KB vs 738KB con param). Necesita diff de JSON keys / DOM text único o minar endpoints API directos.
@@ -40,11 +46,13 @@
 7. **Subdomain takeover**: DNS CNAME check (para HubSpot customer connected domains).
 8. **SSRF cloud metadata**: apuntar a 169.254.169.254 (Aikido/HubSpot cloud).
 
-## 6. Siguiente práctica priorizada (pre-real)
-- **P1 (DPG)**: param mining SPA-aware en /api/* (authId, userId, order) + IDOR cross-account con 2 cuentas.
-- **P2 (Aikido)**: BOLA cross-workspace en /api/accounts; JWT alg confusion si aplica.
-- **P3 (HubSpot CTF)**: trial portal + cross-portal IDOR contra portal 46962361 (flag firstname).
-- **P4 (general)**: race condition en Juice Shop; SSRF metadata en lab; response-manipulation auth bypass.
+## 6. Siguiente práctica priorizada (sub-agente + Stella fusionado)
+- **P1 Race condition single-packet** en Juice Shop → transferir a Aikido SaaS (BOLA/límites). Alta prioridad.
+- **P2 SSRF metadata + bypasses** (redirect, DNS rebind) → core Aikido.
+- **P3 2FA/auth bypass response manipulation** en lab → aplicable a DPG login.
+- **P4 Param mining + content discovery** con recon_browser sobre scope DPG wildcard → endpoints legacy con SQLi/XSS.
+- **P5 Blind XSS OOB** (payloads en headers) → XSS High en DPG sin depender de reflejado.
+- **P3b HubSpot CTF** (portal 46962361): cross-portal IDOR para leer `firstname`+`super_secret` ($20k). Requiere cuenta HackerOne + trial.
 
 ## 7. Regla de oro comunidad que ya cumplimos
 "Manual testing finds the bounties." Scanners no entran. Nuestro recon_browser (Playwright) es exactamente el approach de la comunidad: cliente con fingerprint real, no urllib bot.
