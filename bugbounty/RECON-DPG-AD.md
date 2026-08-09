@@ -33,11 +33,15 @@ STATUS 200 en todos los targets (WAF acepta tráfico de browser legítimo).
 - IDOR numérico en APIs de account/carrito (Critical si mass)
 - **IDOR en `authId` UUID del endpoint /api/consent** (Técnica fundamentada 2025-2026):
   - "Sandwich attack" (dev.to/mohamed_aboelkheir): si el UUID no es v4 aleatorio sino v1 (timestamp+MAC), es predecible → enumeración real → eleva UUID IDOR de Low a Critical.
+  - **Verificar versión UUID**: dígito 13 (`...11ef...` = v1). Si es v1 → generar candidatos intermedios entre 2 UUIDs propios capturados.
   - Probar: cambiar `authId` por otro UUID generado cercano en tiempo; si la API devuelve consent state de OTRO usuario → IDOR cross-user.
-  - `readOnly=false` → ¿se puede ESCRIBIR/modificar consent de otro usuario? (privesc de estado).
-- **SSRF/Open Redirect vía `siteUrl`**: si el backend usa `siteUrl` para fetch/server-side render sin validación estricta de host → SSRF a metadata cloud (Critical si impacto) u open redirect (Low). Verificar que no caiga en out-of-scope privacy endpoints.
-- **CORS misconfig** en /api/consent y /api/metrics (Intigriti blog "Exploiting CORS"): si reflejan `Origin` con `Access-Control-Allow-Credentials: true` → robo de respuesta con token de víctima.
-- **`/api/metrics` (pg.dpgmedia.net)**: excessive data exposure — ¿filtra PII en payload? ¿acepta POST sin auth?
+  - `readOnly=false` → ¿se puede ESCRIBIR/modificar consent de otro usuario? (privesc de estado, mass write = Critical).
+- **SSRF/Open Redirect vía `siteUrl`**: si el backend usa `siteUrl` para fetch/server-side render sin validación estricta de host → SSRF a metadata cloud (Critical si impacto) u open redirect (Low). Probar allow-list bypass (`www.ad.nl.attacker.com`). Verificar que no caiga en out-of-scope privacy endpoints.
+- **CORS misconfig** en /api/consent (Intigriti blog "Exploiting CORS"): si reflejan `Origin` con `Access-Control-Allow-Credentials: true` → robo de respuesta con token de víctima. Probar `Origin: null`, subdominio `evil.ad.nl`.
+- **`/api/metrics` (pg.dpgmedia.net)**: ⚠️ **`.net` ESTÁ FUERA DE SCOPE** (`*.ad.nl`, `*.dpgmedia.nl` sí). NO tocar sin confirmar con Intigriti. Si estuviera in-scope: info leak / Prometheus expuesto.
+- **HPP (Parameter Pollution)**: `authId=<mío>&authId=<víctima>` para saltar validación de autorización.
+- **Web cache deception**: si consent+PII se cachea (headers `X-Cache`/`Age`) → posible leak a otros usuarios.
+- **integratorId=ad**: tampering a `volkskrant`/`parool`/`trouw` → cross-tenant access / info leak de config.
 - Auth bypass en flujo myaccount (vertical High)
 - Stored XSS en webwinkel (High, área no excluida)
 - SQLi en parámetros de búsqueda/filtro (Critical)
@@ -45,17 +49,23 @@ STATUS 200 en todos los targets (WAF acepta tráfico de browser legítimo).
 - SSRF con impacto (metadata cloud) — blind sin impacto = out
 
 ### Checklist manual (con header Intigriti, rate 5 req/seg, SIN scanners)
-1. GET `/api/consent?authId=<propio>` → capturar respuesta (estado consent).
-2. Repetir con `authId` de otro usuario (generado/observado) → ¿devuelve datos ajenos? (IDOR).
-3. POST `/api/consent` con `readOnly=false` y `authId` ajeno → ¿escribe estado ajeno? (privesc).
-4. Manipular `siteUrl` a `http://169.254.169.254/` → ¿SSRF? (solo si impacto real).
-5. Enviar `Origin: https://evil.com` → ¿CORS refleja con credentials? (si sí, documentar PoC).
-6. Inspeccionar headers de respuesta en `/api/metrics` → ¿leaks de PII/token?
-7. Verificar duplicado: buscar mismo patrón en volkskrant.nl/parool.nl antes de submit.
+```bash
+# Baseline propia sesión
+curl -s -D - 'https://pg.ad.nl/api/consent?language=nl&siteUrl=https%3A%2F%2Fwww.ad.nl&readOnly=false&authId=<MI_UUID>&integratorId=ad' \
+  -H 'X-Intigriti-Username: mrpuff0420' -o /dev/null
+```
+1. Guardar 2 UUIDs propios (t1, t2) → verificar versión UUID (v1 vs v4, dígito 13).
+2. **IDOR:** repetir con `authId` de 2ª cuenta propia → ¿lee/escribe su consent? Documentar diff.
+3. **CORS:** añadir `-H 'Origin: https://evil.example'` → revisar ACAO/ACAC.
+4. **integratorId:** probar `volkskrant/parool/trouw` → diff en respuesta.
+5. **SSRF:** `siteUrl` → colaborador propio (Interactsh) con header Intigriti; esperar DNS/HTTP hit para impacto.
+6. **HPP:** duplicar `authId`. **Throttle sleep 0.2s. Sin fuzzing automático.**
 
 ### Red flags de duplicado (DPG comparte codebase)
-- Mismo bug en Volkskrant/Parool/Trouw/dpgmedia.nl = duplicado
-- Verificar si ya reportado en otro DPG antes de submit
+- Un hallazgo en `pg.ad.nl` **casi seguro replica** en `volkskrant.nl/parool.nl/trouw.nl` (misma CMP). Reportar como **UN solo issue multi-marca**, no varios.
+- Consent/CMP endpoints son heavily-tested → revisar known-issues de Intigriti.
+- UUID IDOR sin enumeración = Low/duplicado garantizado por RoE. No reportar sin PoC de predicción.
+- SSRF/XSS en `/abonnementen` y privacy endpoints = **out-of-scope explícito**.
 
 ## Compliance
 - Header Intigriti en TODA request. Rate limit 5 req/seg.
