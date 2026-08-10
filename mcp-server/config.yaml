@@ -1,0 +1,14 @@
+# TARS Tactical MCP — config
+# Mini M4 = Cognitive Core (juicio + KG). GEEKOM = ejecutor (root@100.123.17.12).
+tactical:
+  geekom_host: "root@100.123.17.12"
+  ollama_url: "http://127.0.0.1:11434"
+  judge_model: "ornith:9b"
+  keep_alive: "0"               # descargar modelo al terminar (presupuesto RAM)
+  kg_path: "/Users/quiquebs/.claude/knowledge-graph.json"
+  timeout: 300
+
+budgets:
+  qdrant_mem_limit: "2g"        # enforce via compose /Users/quiquebs/qdrant-compose
+  ollama_max_loaded: 1          # un solo LLM activo a la vez
+  mini_inference_gb: 10
