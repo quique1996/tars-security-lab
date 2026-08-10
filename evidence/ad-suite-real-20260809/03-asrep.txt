@@ -1,0 +1,4 @@
+/opt/ad-lab/suite-ad-real/asrep-extract-authenticated.py:44: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now = datetime.datetime.utcnow()
+[+] AS-REP etype=23 enc-part=210 bytes
+$krb5asrep$23$asrep_svc@TARS.LOCAL:3d05ebec32f4c6056e9567c0faeba659$be5962ef9dae4d1cf45abbe0b350180b88f6661b58bc28cfed354a65f9ded4dec790444741850a7016083b945986f766b9e4617b4bf9ba85e3cd54872ccd80bf9174d9b16afbe558cdc38065d8b966463e8bc32623378f84fc42f9f890a97e35b5db84bdb90eb16819aa2be8c812fa54347933e44bf2cd53c41e1b401e266a35576f38db45a717a2bb3c7a7e1396574a17a3361509c62fccd0e1a5cbfd5ddf06d6b79a8aedeb4174a1f2b90da7f534674f4c68918d16a05392a149fe2d84ebe0718f

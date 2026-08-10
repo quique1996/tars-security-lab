@@ -1,0 +1,180 @@
+[20:20:02] ============ ROUND 2 START ============
+[20:20:02] === R1 kerberoast (chmod +x fix) ===
+kinit: Cannot find KDC for realm "TARS.LOCAL" while getting initial credentials
+rc=0
+[20:20:02] TGS hashes: 0
+[20:20:02] === R2 metasploitable2 (diagnostico arranque) ===
+[20:20:02] -- estado /data + disco VM:
+NAME          SIZE LABEL              MOUNTPOINT
+loop0         4.5G Kali Linux amd64 1 /mnt/kali-iso
+sdc           1.8T DATA               /data
+nbd0            0B                    
+nbd1            0B                    
+nbd2            0B                    
+nbd3            0B                    
+nbd4            0B                    
+nbd5            0B                    
+nbd6            0B                    
+nbd7            0B                    
+nbd8            0B                    
+/dev/sdc /data ext4 rw,seclabel,relatime 0 0
+[20:20:02] -- disk path + SELinux label de la VM:
+      <source file='/data/vms/metasploitable2/metasploitable2.qcow2'/>
+      <mac address='52:54:00:8e:3c:a7'/>
+META_DISK=/data/vms/metasploitable2/metasploitable2.qcow2
+-rw-r--r--. 1 qemu qemu system_u:object_r:svirt_image_t:s0:c22,c770 1946943488 Aug  9 00:40 /data/vms/metasploitable2/metasploitable2.qcow2
+[20:20:02] -- virsh start (sin suprimir errores):
+error: Failed to start domain 'metasploitable2'
+error: Requested operation is not valid: Setting different SELinux label on /data/vms/metasploitable2/metasploitable2.qcow2 which is already in use
+
+start rc=0
+[20:20:03] metasploitable2 NO arranco — se documenta; relay win via DC-signing finding en R4
+[20:20:03] === R3 printerbug fetch + spoolss coercion ===
+[20:20:03] master 404 — probando API tree
+-rwxr-xr-x. 1 root root 14 Aug  9 20:16 printerbug.py
+printerbug no disponible (URL 404)
+[20:20:03] === R4 relay Administrator -> DC SMB (expect signing block) ===
+do_connect: Connection to 192.168.122.1 failed (Error NT_STATUS_CONNECTION_REFUSED)
+[20:20:18] === R5 GPO ABUSE via sshpass ===
+[20:20:18] -- test ssh DC:
+dc01
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gse_krb5
+Using temporary directory /tmp/tmpzuok2sw1 (use --tmpdir to change)
+GPO 'TARS-GPO-Abuse' created as {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+[20:20:19] GPO_GUID={40B48ABF-204C-4FF6-8576-F75F531FFF77}
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+ERROR(ldb): Error adding GPO Link - LDAP error 65 LDAP_OBJECT_CLASS_VIOLATION -  <00002014: objectclass_attrs: attribute 'gPLink' on entry 'CN=Users,DC=tars,DC=local' does not exist in the specified objectclasses!> <>
+cd \Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\Machine\Scripts\: NT_STATUS_OBJECT_PATH_NOT_FOUND
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \Startup\tmp\startup.cmd
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \Startup\tmp\scripts.ini
+  .                                   D        0  Sun Aug  9 20:20:19 2026
+  ..                                  D        0  Sun Aug  9 20:20:19 2026
+
+		29801344 blocks of size 1024. 26671180 blocks available
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \tmp\gpt.ini
+  .                                   D        0  Sun Aug  9 20:20:19 2026
+  ..                                  D        0  Sun Aug  9 17:39:22 2026
+  tars.local                          D        0  Sat Aug  8 01:33:26 2026
+  Startup                             D        0  Sun Aug  9 20:20:19 2026
+
+		29801344 blocks of size 1024. 26671180 blocks available
+rc=0
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+GPO          : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+display name : TARS-GPO-Abuse
+path         : \\tars.local\sysvol\tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}
+dn           : CN={40B48ABF-204C-4FF6-8576-F75F531FFF77},CN=Policies,CN=System,DC=tars,DC=local
+version      : 0
+flags        : NONE
+ACL          : <hidden>
+
+---
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+No GPO(s) linked to DN=CN=Users,DC=tars,DC=local
+---
+ls: cannot access '/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/': No such file or directory
+---
+cat: /var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/startup.cmd: No such file or directory
+error: Failed to shutdown domain 'metasploitable2'
+[20:20:20] ============ ROUND 2 DONE ============
+4954860dee544b6bef22dbb87ee744872621a67d166af9123fc2eba63afc1cb0  01-spn-enum.txt
+04a30eb40b3c8ee7f958d1d7385760ecd9a5e67f03c7b49e9e07f88d499a26b0  02-kerberoast-hashes.txt
+bc0657ab75296608cba4a10810ec9a69797d6ff31849d4637124e4e4190d3e15  03-asrep.txt
+c4779ef88f5f5f09c0aa57dcdf15a2ecf5e5fa797860545f31aba8d284aa27a0  04-asrep-crack.txt
+a5520d150ec46d6780249d9c59808cdbd024b9ad6bd9bd440f405fce655991e1  05-secretsdump-backup-vss.txt
+69313709d8a07648767372f2ef45d8bf1ae0195bc162c527752c47a9e79bb4fc  05-secretsdump-full.txt
+bacb36e3a3918331a71a39733c3ae455c000cea70b89d32b10f5206912ac697a  05-secretsdump-justdc.txt
+37d12137aa4e064a0803908d9cf0f84c3de36d486cbf9b808da61f1174151885  05-secretsdump-vss.txt
+813674408f5c56b82004155c79b1d87b2a0e0ce709dd7c4b5f8d6a71688411ab  06-svcbackup-shares.txt
+e6941878a69c53032a7179256dd25b56b685795a8663c5dd51c4f5b4c13008b8  07-bloodhound-ce.txt
+f48f849a67804b0c8d6d890a10519e3df37b8e48f69a01343da0ae6b1df37947  08a-virsh-start.txt
+80f53f7029d95e435605af0306c794b570870e8c3ad0d8acfb953c42e3f587e6  08b-coercion-tools.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  08b-printerbug-tree.txt
+4bd11eeb09fab512181ba849804d22704f2d25d276f0a6987f9864f85ecab9ea  08e-petitpotam-r2.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  08f-relay-ldap-result.txt
+129685f30a5c3b056066888d79ed442ad3cb9621f381b08255562bfad8765c1b  08g-printerbug.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  08h-relay-smb-result.txt
+5701a89302397c341161215bf51a3aa01a00b8d017516f52d3c0d7d600306715  08h-trigger-dcsmb.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  08i-relay-dcsmb-result.txt
+ba1f9a9b1a3cb95f3905b7a5b3ff03842d67ba5a9b4d3fd00ec8c9aa44db1753  09a-gpo-create.txt
+a2eb18932d7963487f8a6f1907ddf9b5497e14b2c19e47bb3e7986879f0892d2  09a-ssh-test.txt
+dd341ac3dedbcdbae96643e7d115f01c9c8527daffe329e2c6a016171741d9ac  09b-gpo-create.txt
+0776d96ed4cbc7882b326b80691922cfb28a680e4e1a1d15bb62cdb8dad21010  09c-gpo-setlink.txt
+bd4d43405fdbb5647dc5a96f00327b9722fe49af8846277798a1aba5bd321094  09d-sysvol-write.txt
+eeb24c44f4b6c106bee78a9403a862c673f2f8f978cf2da9bce30f4b864686ad  09e-gpo-verify.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  02-kerb.hashes
+e9a4da21890874a3905aafb55d2b6b70f5ce98a707af5e9e43891879ca9d10f2  03-asrep.hashes

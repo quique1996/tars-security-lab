@@ -1,0 +1,14 @@
+cd \Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\Machine\Scripts\: NT_STATUS_OBJECT_PATH_NOT_FOUND
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \Startup\tmp\startup.cmd
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \Startup\tmp\scripts.ini
+  .                                   D        0  Sun Aug  9 20:20:19 2026
+  ..                                  D        0  Sun Aug  9 20:20:19 2026
+
+		29801344 blocks of size 1024. 26671180 blocks available
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \tmp\gpt.ini
+  .                                   D        0  Sun Aug  9 20:20:19 2026
+  ..                                  D        0  Sun Aug  9 17:39:22 2026
+  tars.local                          D        0  Sat Aug  8 01:33:26 2026
+  Startup                             D        0  Sun Aug  9 20:20:19 2026
+
+		29801344 blocks of size 1024. 26671180 blocks available

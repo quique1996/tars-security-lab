@@ -1,0 +1,19 @@
+SMB                      192.168.122.50  445    DC01             [*] Unix - Samba x32 (name:DC01) (domain:tars.local) (signing:True) (SMBv1:False) (Null Auth:True) (DC:True)
+SMB                      192.168.122.50  445    DC01             [+] tars.local\: 
+SMB                      192.168.122.50  445    DC01             [*] Enumerated shares
+SMB                      192.168.122.50  445    DC01             Share           Permissions            Remark
+SMB                      192.168.122.50  445    DC01             -----           -----------            ------
+SMB                      192.168.122.50  445    DC01             sysvol                                 
+SMB                      192.168.122.50  445    DC01             netlogon                               
+SMB                      192.168.122.50  445    DC01             IPC$                                   IPC Service (Samba 4.17.12-Debian)
+SMB                      192.168.122.246 445    METASPLOITABLE   [*] Unix (name:METASPLOITABLE) (domain:localdomain) (signing:False) (SMBv1:True) (Null Auth:True)
+SMB                      192.168.122.246 445    METASPLOITABLE   [+] localdomain\: 
+SMB                      192.168.122.246 445    METASPLOITABLE   [*] Enumerated shares
+SMB                      192.168.122.246 445    METASPLOITABLE   Share           Permissions            Remark
+SMB                      192.168.122.246 445    METASPLOITABLE   -----           -----------            ------
+SMB                      192.168.122.246 445    METASPLOITABLE   print$                                 Printer Drivers
+SMB                      192.168.122.246 445    METASPLOITABLE   tmp             READ,WRITE             oh noes!
+SMB                      192.168.122.246 445    METASPLOITABLE   opt                                    
+SMB                      192.168.122.246 445    METASPLOITABLE   IPC$                                   IPC Service (metasploitable server (Samba 3.0.20-Debian))
+SMB                      192.168.122.246 445    METASPLOITABLE   ADMIN$                                 IPC Service (metasploitable server (Samba 3.0.20-Debian))
+Running nxc against 256 targets ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00

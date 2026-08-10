@@ -1,0 +1,8 @@
+SMB                      192.168.122.50  445    DC01             [*] Unix - Samba x32 (name:DC01) (domain:tars.local) (signing:True) (SMBv1:False) (Null Auth:True) (DC:True)
+SMB                      192.168.122.50  445    DC01             [+] tars.local\svc_backup:Welcome1 
+SMB                      192.168.122.50  445    DC01             [*] Enumerated shares
+SMB                      192.168.122.50  445    DC01             Share           Permissions            Remark
+SMB                      192.168.122.50  445    DC01             -----           -----------            ------
+SMB                      192.168.122.50  445    DC01             sysvol          READ                   
+SMB                      192.168.122.50  445    DC01             netlogon        READ                   
+SMB                      192.168.122.50  445    DC01             IPC$                                   IPC Service (Samba 4.17.12-Debian)

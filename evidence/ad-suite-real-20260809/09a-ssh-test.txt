@@ -1,0 +1,9 @@
+dc01
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered

@@ -1,0 +1,16 @@
+putting file startup.cmd as \tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\Machine\Scripts\Startup\startup.cmd (86.9 kB/s) (average 86.9 kB/s)
+putting file scripts.ini as \tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\Machine\Scripts\Startup\scripts.ini (470000.0 kB/s) (average 132.8 kB/s)
+putting file gpt.ini as \tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\gpt.ini (1270000.0 kB/s) (average 256.8 kB/s)
+  .                                   D        0  Sun Aug  9 20:34:14 2026
+  ..                                  D        0  Sun Aug  9 20:28:08 2026
+  startup.cmd                         A       89  Sun Aug  9 20:34:14 2026
+  scripts.ini                         A       47  Sun Aug  9 20:34:14 2026
+
+		29801344 blocks of size 1024. 26671124 blocks available
+  .                                   D        0  Sun Aug  9 20:20:19 2026
+  ..                                  D        0  Sun Aug  9 20:20:19 2026
+  User                                D        0  Sun Aug  9 20:20:19 2026
+  GPT.INI                             A      127  Sun Aug  9 20:34:14 2026
+  Machine                             D        0  Sun Aug  9 20:28:08 2026
+
+		29801344 blocks of size 1024. 26671124 blocks available

@@ -1,0 +1,21 @@
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gse_krb5
+Using temporary directory /tmp/tmpzuok2sw1 (use --tmpdir to change)
+GPO 'TARS-GPO-Abuse' created as {40B48ABF-204C-4FF6-8576-F75F531FFF77}

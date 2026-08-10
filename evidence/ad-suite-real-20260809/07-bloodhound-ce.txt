@@ -1,0 +1,43 @@
+INFO: BloodHound.py for BloodHound Community Edition
+INFO: Found AD domain: tars.local
+INFO: Getting TGT for user
+INFO: Connecting to LDAP server: dc01.tars.local
+WARNING: Kerberos auth to LDAP failed, trying NTLM
+Traceback (most recent call last):
+  File "/opt/ad-tools-venv/bin/bloodhound-ce-python", line 6, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/__init__.py", line 347, in main
+    bloodhound.run(collect=collect,
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+                   num_workers=args.workers,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                   exclude_dcs=args.exclude_dcs,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   fileNamePrefix=args.outputprefix)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/__init__.py", line 78, in run
+    self.pdc.prefetch_info('objectprops' in collect, 'acl' in collect, cache_computers=do_computer_enum)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/domain.py", line 620, in prefetch_info
+    self.get_objecttype()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/domain.py", line 303, in get_objecttype
+    self.ldap_connect()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/domain.py", line 114, in ldap_connect
+    ldap = self.ad.auth.getLDAPConnection(hostname=self.hostname, ip=ip,
+                                          baseDN=self.ad.baseDN, protocol=protocol)
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/bloodhound/ad/authentication.py", line 164, in getLDAPConnection
+    bound = conn.bind()
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/core/connection.py", line 628, in bind
+    response = self.do_ntlm_bind(controls)
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/core/connection.py", line 1373, in do_ntlm_bind
+    response = self.post_send_single_response(self.send('bindRequest', request, controls))
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/strategy/sync.py", line 160, in post_send_single_response
+    responses, result = self.get_response(message_id)
+                        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/opt/ad-tools-venv/lib64/python3.14/site-packages/ldap3/strategy/base.py", line 370, in get_response
+    raise LDAPSessionTerminatedByServerError(self.connection.last_error)
+ldap3.core.exceptions.LDAPSessionTerminatedByServerError: session terminated by server

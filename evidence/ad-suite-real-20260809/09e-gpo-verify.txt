@@ -1,0 +1,48 @@
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+GPO          : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+display name : TARS-GPO-Abuse
+path         : \\tars.local\sysvol\tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}
+dn           : CN={40B48ABF-204C-4FF6-8576-F75F531FFF77},CN=Policies,CN=System,DC=tars,DC=local
+version      : 0
+flags        : NONE
+ACL          : <hidden>
+
+---
+debug_lookup_classname: Unknown classname[kdc] -> adding it...
+GENSEC backend 'gssapi_spnego' registered
+GENSEC backend 'gssapi_krb5' registered
+GENSEC backend 'gssapi_krb5_sasl' registered
+GENSEC backend 'spnego' registered
+GENSEC backend 'schannel' registered
+GENSEC backend 'ncalrpc_as_system' registered
+GENSEC backend 'sasl-EXTERNAL' registered
+GENSEC backend 'ntlmssp' registered
+GENSEC backend 'ntlmssp_resume_ccache' registered
+GENSEC backend 'http_basic' registered
+GENSEC backend 'http_ntlm' registered
+GENSEC backend 'http_negotiate' registered
+GENSEC backend 'krb5' registered
+GENSEC backend 'fake_gssapi_krb5' registered
+Starting GENSEC mechanism spnego
+Starting GENSEC submechanism gssapi_krb5
+No GPO(s) linked to DN=CN=Users,DC=tars,DC=local
+---
+ls: cannot access '/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/': No such file or directory
+---
+cat: /var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/startup.cmd: No such file or directory

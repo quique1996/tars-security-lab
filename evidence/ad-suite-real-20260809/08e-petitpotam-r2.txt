@@ -1,0 +1,23 @@
+/opt/ad-lab/suite-ad-real/petitpotam.py:23: SyntaxWarning: "\ " is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\ "? A raw string is also an option.
+  | _ \   ___    | |_     (_)    | |_     | _ \   ___    | |_    __ _    _ __
+
+                                                                                               
+              ___            _        _      _        ___            _                     
+             | _ \   ___    | |_     (_)    | |_     | _ \   ___    | |_    __ _    _ __   
+             |  _/  / -_)   |  _|    | |    |  _|    |  _/  / _ \   |  _|  / _` |  | '  \  
+            _|_|_   \___|   _\__|   _|_|_   _\__|   _|_|_   \___/   _\__|  \__,_|  |_|_|_| 
+          _| """ |_|"""""|_|"""""|_|"""""|_|"""""|_| """ |_|"""""|_|"""""|_|"""""|_|"""""| 
+          "`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
+                                         
+              PoC to elicit machine account authentication via some MS-EFSRPC functions
+                                      by topotam (@topotam77)
+      
+                     Inspired by @tifkin_ & @elad_shamir previous work on MS-RPRN
+
+
+
+Trying pipe lsarpc
+[-] Connecting to ncacn_np:192.168.122.50[\PIPE\lsarpc]
+[+] Connected!
+[+] Binding to c681d488-d850-11d0-8c52-00c04fd90f7e
+Something went wrong, check error status => Bind context 1 rejected: provider_rejection; abstract_syntax_not_supported (this usually means the interface isn't listening on the given endpoint)

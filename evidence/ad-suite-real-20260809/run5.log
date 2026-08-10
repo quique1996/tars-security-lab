@@ -1,0 +1,46 @@
+[20:35:32] ============ ROUND 5 START ============
+[20:35:32] === R5.1 metasploitable2 boot + IP ===
+error: Domain is already active
+
+[20:35:42] metasploitable2 IP=192.168.122.246/24
+[20:35:42] leases actuales:
+ Expiry Time           MAC address         Protocol   IP address           Hostname   Client ID or DUID
+---------------------------------------------------------------------------------------------------------
+ 2026-08-09 21:26:01   52:54:00:8e:3c:a7   ipv4       192.168.122.246/24   -          -
+
+SMB                      192.168.122.50  445    DC01             [*] Unix - Samba x32 (name:DC01) (domain:tars.local) (signing:True) (SMBv1:False) (Null Auth:True) (DC:True)
+SMB                      192.168.122.50  445    DC01             [+] tars.local\: 
+SMB                      192.168.122.50  445    DC01             [*] Enumerated shares
+SMB                      192.168.122.50  445    DC01             Share           Permissions            Remark
+SMB                      192.168.122.50  445    DC01             -----           -----------            ------
+SMB                      192.168.122.50  445    DC01             sysvol                                 
+SMB                      192.168.122.50  445    DC01             netlogon                               
+SMB                      192.168.122.50  445    DC01             IPC$                                   IPC Service (Samba 4.17.12-Debian)
+SMB                      192.168.122.246 445    METASPLOITABLE   [*] Unix (name:METASPLOITABLE) (domain:localdomain) (signing:False) (SMBv1:True) (Null Auth:True)
+SMB                      192.168.122.246 445    METASPLOITABLE   [+] localdomain\: 
+SMB                      192.168.122.246 445    METASPLOITABLE   [*] Enumerated shares
+SMB                      192.168.122.246 445    METASPLOITABLE   Share           Permissions            Remark
+SMB                      192.168.122.246 445    METASPLOITABLE   -----           -----------            ------
+SMB                      192.168.122.246 445    METASPLOITABLE   print$                                 Printer Drivers
+SMB                      192.168.122.246 445    METASPLOITABLE   tmp             READ,WRITE             oh noes!
+SMB                      192.168.122.246 445    METASPLOITABLE   opt                                    
+SMB                      192.168.122.246 445    METASPLOITABLE   IPC$                                   IPC Service (metasploitable server (Samba 3.0.20-Debian))
+SMB                      192.168.122.246 445    METASPLOITABLE   ADMIN$                                 IPC Service (metasploitable server (Samba 3.0.20-Debian))
+Running nxc against 256 targets ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+[20:35:46] === R5.2 firewall 445 ===
+running
+success
+445/tcp 8080/tcp 9100/tcp
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Connection refused.
+[20:35:49] === R5.3 RELAY WIN: Administrator -> metasploitable2 ===
+do_connect: Connection to 192.168.122.1 failed (Error NT_STATUS_CONNECTION_REFUSED)
+OSError: [Errno 98] Address already in use
+[20:36:11] loot:
+[20:36:11] === R5.4 relay Administrator -> DC SMB (signing) ===
+do_connect: Connection to 192.168.122.1 failed (Error NT_STATUS_CONNECTION_REFUSED)
+OSError: [Errno 98] Address already in use
+[20:36:33] === R5.5 cleanup ===
+success
+Domain 'metasploitable2' is being shutdown
+[20:36:33] ============ ROUND 5 DONE ============

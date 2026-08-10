@@ -1,0 +1,14 @@
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/:
+GPT.INI
+Machine
+User
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine:
+Scripts
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts:
+Startup
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup:
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/User:

@@ -1,0 +1,10 @@
+Added/Updated GPO link
+GPO(s) linked to DN DC=tars,DC=local
+    GPO     : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+    Name    : TARS-GPO-Abuse
+    Options : NONE
+
+    GPO     : {31B2F340-016D-11D2-945F-00C04FB984F9}
+    Name    : Default Domain Policy
+    Options : NONE
+

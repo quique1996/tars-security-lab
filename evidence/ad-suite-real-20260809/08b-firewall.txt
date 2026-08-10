@@ -1,0 +1,5 @@
+running
+success
+445/tcp 8080/tcp 9100/tcp
+Ncat: Version 7.92 ( https://nmap.org/ncat )
+Ncat: Connection refused.

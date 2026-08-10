@@ -1,0 +1,89 @@
+[20:24:55] ============ ROUND 3 START ============
+[20:24:55] === R1 kerberoast con conf multilinea ===
+kinit: Cannot find KDC for realm "TARS.LOCAL" while getting initial credentials
+rc=0
+[20:24:55] TGS hashes: 0
+[20:24:55] === R2 metasploitable2: chcon + start ===
+-rw-r--r--. 1 qemu qemu system_u:object_r:svirt_image_t:s0:c22,c770 1946943488 Aug  9 00:40 /data/vms/metasploitable2/metasploitable2.qcow2
+chcon OK
+error: Failed to start domain 'metasploitable2'
+error: Requested operation is not valid: Setting different SELinux label on /data/vms/metasploitable2/metasploitable2.qcow2 which is already in use
+
+[20:25:00] chcon no basto — fallback NVMe (patron dc1 validado)
+copy OK
+Domain 'metasploitable2' has been undefined
+Domain 'metasploitable2' defined from /tmp/meta.xml
+Domain 'metasploitable2' started
+
+[20:27:49] metasploitable2 IP=NONE
+[20:27:49] === R4b relay Administrator -> DC SMB (signing check) ===
+do_connect: Connection to 192.168.122.1 failed (Error NT_STATUS_CONNECTION_REFUSED)
+OSError: [Errno 98] Address already in use
+[20:28:08] === R5 GPO abuse: setlink raiz dominio + payload ===
+Added/Updated GPO link
+GPO(s) linked to DN DC=tars,DC=local
+    GPO     : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+    Name    : TARS-GPO-Abuse
+    Options : NONE
+
+    GPO     : {31B2F340-016D-11D2-945F-00C04FB984F9}
+    Name    : Default Domain Policy
+    Options : NONE
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/:
+GPT.INI
+Machine
+User
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine:
+Scripts
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts:
+Startup
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup:
+
+/var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/User:
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\Machine\Scripts\Startup\tmp\startup.cmd
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\Machine\Scripts\Startup\tmp\scripts.ini
+  .                                   D        0  Sun Aug  9 20:28:08 2026
+  ..                                  D        0  Sun Aug  9 20:28:08 2026
+
+		29801344 blocks of size 1024. 26671148 blocks available
+NT_STATUS_OBJECT_PATH_NOT_FOUND opening remote file \tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}\tmp\gpt.ini
+  .                                   D        0  Sun Aug  9 20:20:19 2026
+  ..                                  D        0  Sun Aug  9 20:20:19 2026
+  User                                D        0  Sun Aug  9 20:20:19 2026
+  GPT.INI                             A       22  Sun Aug  9 20:20:19 2026
+  Machine                             D        0  Sun Aug  9 20:28:08 2026
+
+		29801344 blocks of size 1024. 26671148 blocks available
+rc=0
+--- gpo show ---
+GPO          : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+display name : TARS-GPO-Abuse
+path         : \\tars.local\sysvol\tars.local\Policies\{40B48ABF-204C-4FF6-8576-F75F531FFF77}
+dn           : CN={40B48ABF-204C-4FF6-8576-F75F531FFF77},CN=Policies,CN=System,DC=tars,DC=local
+version      : 0
+flags        : NONE
+ACL          : <hidden>
+
+--- getlink raiz ---
+GPO(s) linked to DN DC=tars,DC=local
+    GPO     : {40B48ABF-204C-4FF6-8576-F75F531FFF77}
+    Name    : TARS-GPO-Abuse
+    Options : NONE
+
+    GPO     : {31B2F340-016D-11D2-945F-00C04FB984F9}
+    Name    : Default Domain Policy
+    Options : NONE
+
+--- payload en SYSVOL ---
+cat: /var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/Machine/Scripts/Startup/startup.cmd: No such file or directory
+--- gpt.ini ---
+cat: /var/lib/samba/sysvol/tars.local/Policies/{40B48ABF-204C-4FF6-8576-F75F531FFF77}/gpt.ini: No such file or directory
+[20:28:09] === R6 printerbug (repo GitHub eliminado; apt Kali) ===
+[20:28:09] === R7 cleanup ===
+Warning: NOT_ENABLED: '445:tcp' not in 'FedoraWorkstation'
+Domain 'metasploitable2' is being shutdown
+[20:28:10] ============ ROUND 3 DONE ============

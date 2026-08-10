@@ -1,0 +1,11 @@
+Impacket v0.14.0.dev0+20260807.180519.239b3bcd - Copyright Fortra, LLC and its affiliated companies 
+
+ServicePrincipalName           Name        MemberOf                                         PasswordLastSet             LastLogon                   Delegation    
+-----------------------------  ----------  -----------------------------------------------  --------------------------  --------------------------  -------------
+HTTP/web.tars.local            svc_web                                                      2026-08-08 01:35:48.082216  2026-08-08 22:56:25.212898                
+HTTP/app.tars.local            deleg_svc                                                    2026-08-08 01:35:49.357979  2026-08-09 01:46:22.606979  unconstrained 
+CIFS/backup.tars.local         svc_backup  CN=Backup Operators,CN=Builtin,DC=tars,DC=local  2026-08-08 01:35:48.790489  2026-08-08 22:47:55.048311                
+MSSQLSvc/dc01.tars.local:1433  svc_sql     CN=Domain Admins,CN=Users,DC=tars,DC=local       2026-08-08 01:35:47.491466  <never>                                   
+
+
+
