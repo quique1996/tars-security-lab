@@ -415,3 +415,26 @@ Ya corremos v0.20.0 en Air y Mini — pero NO usamos las features del release:
 8. **iron-proxy**: usar como capa segura
 
 + CASE (hoy 23:00), CI/CD, guardrails, jcode, iMac, n8n (buzz de blocks — el AI Agent node es el bloque #1 en 2026)
+
+---
+
+## 20. DeepTeam — instalado y probado (2026-08-11)
+
+### Instalación (Air, venv dedicado)
+- `deepteam 1.0.7` en `.venv-deepteam` (Python 3.12 — GEEKOM/Mini tienen 3.14, incompatible)
+- Deps completadas manualmente (el resolver de pip falla por conflicto de click): pydantic, pydantic_settings, rich, aiohttp, requests, nest_asyncio, jinja2, openai, sentry_sdk, ollama
+- **Pitfall**: usar SIEMPRE `env -u PYTHONPATH -u VIRTUAL_ENV .venv-deepteam/bin/python` (PYTHONPATH quirk del venv Hermes)
+
+### API (verificada)
+- `RedTeamer(simulator_model, evaluation_model, target_purpose, async_mode, max_concurrent)`
+- `rt.red_team(model_callback=..., framework=OWASP_ASI_2026(), attacks_per_vulnerability_type=1, ignore_errors=True, _upload_to_confident=False)`
+- Frameworks: OWASP_ASI_2026, MITRE, NIST, Aegis, BeaverTails, EUAIAct
+- **Pitfall**: `framework` es instancia (no clase); `red_team` no acepta `frameworks` (plural)
+
+### Prueba real (llama3.1:8b vía tunnel Air→GEEKOM)
+- Corrió 266s, 61 ataques intentados, **TODOS fallaron con ReadError**
+- **Lección**: modelos locales vía tunnel NO sirven para red teaming automatizado (latencia alta). DeepTeam necesita modelo rápido (cloud) o local sin tunnel
+- **Decisión**: usar glm-5.2:cloud para corridas reales de DeepTeam
+
+### Kanban
+- t_a045d828 → done (instalado; corrida real con cloud pendiente)
