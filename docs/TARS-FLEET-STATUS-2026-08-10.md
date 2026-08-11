@@ -1,0 +1,159 @@
+# TARS FLEET — Estado Completo y Plan Maestro (2026-08-10)
+
+> Documento de referencia única. Verificado en vivo 2026-08-10 19:30 CST.
+> Meta: trabajo remoto de ciberseguridad (AI Red Teamer / AI Security Engineer).
+
+---
+
+## 1. Arquitectura actual (4 nodos + iPhone + HDDs + cloud)
+
+```
+                    ☁️ 2× OLLAMA PRO ($40/mes) — espina dorsal inferencia
+                     cloud1=enriquebs1996 · cloud2=quiquebedolla
+                     glm-5.2 · qwen3-coder:480b (no tocan RAM de nadie)
+
+  ┌─────────────┬─────────────┬─────────────┬─────────────┐
+  │  AIR M1     │  MINI M4    │  GEEKOM     │  iMac M3    │
+  │  8GB        │  16GB       │  14→32GB    │  16GB       │
+  │  Control    │  Brain      │  Offensive  │  Storage    │
+  │  tu mesa    │  KG+Qdrant  │  lab + 30B  │  vector +   │
+  │  portfolio  │  14B judge  │  (sept)     │  services   │
+  └─────────────┴─────────────┴─────────────┴─────────────┘
+        │              │              │              │
+        └──────────────┴──────┬───────┴──────────────┘
+                         📱 iPhone 17 Pro Max
+                          A19 Pro 12GB — Qwen3 8B local (13 tok/s)
+                          nodo móvil + sensor de campo + control remoto
+```
+
+### HDDs (Mini M4, verificados 2026-08-10)
+| Disco | Tamaño | Libre | Uso nuevo planificado |
+|---|---|---|---|
+| Workspace | 466GB | 225GB | Dataset store (corpus, CVEs, Sigma, writeups) |
+| Backups | 1.8TB | 1.4TB | Checkpoints KG + Qdrant (restic), Time Machine |
+| RESPALDO | 1.8TB | 1.6TB | Cold storage (datasets crudos, ISO, evidencias) |
+| EXO | 1.2GB | 254MB | Cluster exo — limpiar (casi lleno) |
+
+---
+
+## 2. Qué se hizo (2026-08-10 — jornada completa)
+
+### Rondas 1-2 — Auditoría + Fixes SRE (Uncle Bob)
+- Ollama loopback Air (matar Ollama.app IPv6) + Mini (plist brew) — verificado solo 127.0.0.1
+- Qdrant: 0.0.0.0→loopback, mem_limit 2g, restart=unless-stopped (11/11 collections preservadas)
+- GEEKOM headless: multi-user.target + gdm/remote-desktop/accounts-daemon/bluetooth inactive
+- Kanban SQLite → Markdown (190 tasks) en git
+- state.db: 743MB datos reales, NO purgar (script retention)
+
+### Ronda 3 — MCP + Batería end-to-end REAL
+- MCP Tactical Server desplegado en Mini (venv, 5 tools: geekom_run, kg_ingest, llm_judge, atlas_map, report_gen)
+- Batería 8 casos × 2 modelos: llama3.1 limpio (jailbreak BLOCKED), qwen3 LEAK T1 (system prompt) + T3 (canary) + PROBE T2
+- Flujo: atlas_map (T3→AML.T0034) → kg_ingest (KG 4015→4018) → report_gen → push
+- Blog draft: `blog/why-your-local-llm-agent-leaks.md`
+
+### Ronda 4 — CVE Triage + VMs
+- CVE triage pipeline (NVD+KEV+EPSS+ornith): 4,254 CVEs → top-10 → reporte → KG 4028
+- Mejora: EPSS 0.0 de CVEs frescos no penaliza (fix verificado 6/6 tests)
+- metasploitable2 APAGADA (dc1+kali quedan)
+- Skill `tars-mcp-pipeline` creada
+
+### Ronda 5 — PortSwigger + verificación
+- sqli-01 SOLVED con evidencia real: payload `Accessories'--`, productos ocultos + banner
+- solve-lab.py corre en Air local (NO GEEKOM — corrección de proceso)
+- Playbook `migrate-qdrant-to-imac.sh` (commit f3b7c34)
+- Fix kg_ingest backup: `knowledge-graph.json.bak-*` (6/6 tests PASS)
+
+### Ronda 6 — Plan 4 nodos + ejecución
+- **Twenty CRM APAGADO** (reversible docker start) — libera RAM Mini
+- **qwen3:14b descargando en Mini** (~9.3GB, Q4)
+- iMac M3 verificado: tailnet 100.70.240.126, SIEMPRE PRENDIDO, port 22 OPEN, latencia 12-20ms, pero **SSH BLOQUEADO** (andrea/quique/enrique/bedolla → permission denied)
+- iPhone 17 Pro Max: A19 Pro 12GB, Qwen3 8B local viable (~13 tok/s, 6.5GB)
+- Investigación Brave: Ollama Pro $20/mes con límites 5h/7d; MLX distributed para clusters
+
+### Commits publicados (12)
+```
+41f729c kanban 190 tasks + docs MCP
+4f1486f mcp server skeleton
+c5bf9c7 ecosystem state
+57fff85 docs lab + battery script
+f96b25f battery report
+d5f15b7 blog + retention policy
+abd228f cve-triage + roadmap + kanban done
+da7742f roadmap ronda 4 + EPSS fix
+777e397 portswigger honesto
+58e2946 sqli-01 SOLVED evidencia real
+f3b7c34 migrate-qdrant-to-imac playbook
+(2 pendientes: docs estado + roadmap v3)
+```
+
+---
+
+## 3. Estado en vivo (2026-08-10 19:30)
+
+| Nodo | Estado | Datos |
+|---|---|---|
+| Air M1 | ✅ | Hermes v0.20.0, gateway UP, Ollama loopback, 470 skills, 29Gi free |
+| Mini M4 | ✅ | gateway UP, Qdrant UP (11 collections, healthz passed), KG 1552/4028, Twenty stopped, qwen3-14B descargado (verificando sha), 16GB |
+| GEEKOM | ✅ | load 0.20, 28 containers, headless, 2 VMs (dc1+kali), metaspl off |
+| iMac M3 | ⚠️ | Tailnet OK, port 22 OPEN, SSH bloqueado (necesita pubkey + username) |
+| iPhone 17 PM | 📱 | No integrado aún (Fase 3 plan) |
+| Cloud | ✅ | 2× Ollama Pro ($40/mes), límites 5h/7d |
+
+---
+
+## 4. Plan Maestro v3 (aprobado en progreso)
+
+### Fase 0 — Hoy (en curso)
+- ✅ Twenty apagado, 14B descargado, playbook iMac listo
+- ⏳ iMac: comando SSH (bloque dado) + username
+- ⏳ iPhone: Tailscale + PocketPal AI (Qwen3 8B) + Telegram
+
+### Fase 1 — Mini = AI Security Core (día 1-2)
+1. Verificar qwen3-14B + benchmark vs ornith:9b
+2. Colima 4GB→2GB (RAM para 14B)
+3. Mover jellyfin/vaultwarden/grafana/uptime → iMac
+4. Gate: judge 14B responde + críticos UP
+
+### Fase 2 — CASE nocturno (día 3-4)
+```
+23:00 CVE triage → 00:00 batería GEEKOM + cloud paralelo → 01:00 judge 14B + KG
+→ 02:00 kg-sync + restic backup → 03:00 blog draft → 07:00 resumen (+iPhone)
+```
+
+### Fase 3 — iPhone operativo (día 3-4)
+Tailscale + Qwen3 8B local + Shortcuts (foto→nota→Mini) + Telegram alerts
+
+### Fase 4 — Storage pipeline (semana 2)
+Limpiar EXO · restic semanal (Qdrant+KG→Backups) · dataset store en Workspace
+
+### Fase 5 — GEEKOM 32GB (septiembre)
+30B Q4 local → judge 3 niveles: 8B iPhone + 14B Mini + 30B GEEKOM + 480B cloud
+
+### Fase 6 — Portfolio Factory (semana 2-4)
+PortSwigger batch · blog posts nocturnos · GitHub Actions CI
+
+### Fase 7 — Purple team autónomo (mes 2)
+Wazuh detecta → n8n alerta → CASE investiga → reporte ATLAS → KG → push iPhone
+
+---
+
+## 5. Qué terminamos teniendo
+
+1. Ecosistema que produce solo (evidencia nueva cada mañana)
+2. Portfolio AI Security Engineer con lab documentado (diferenciador #1)
+3. 4 niveles de juicio: 8B móvil → 14B core → 30B GEEKOM → 480B cloud
+4. Storage profesional 3-2-1 (restic + dataset store + cold storage)
+5. Control desde cualquier lado (iPhone)
+6. Pipeline completo: ataque (GEEKOM) → detección (Wazuh) → juicio (Mini/cloud) → memoria (KG/Qdrant) → publicación (Air/repo) → alerta (iPhone)
+
+## 6. Pendientes (en orden)
+
+1. Desbloquear iMac (pubkey + username)
+2. Verificar 14B + benchmark judge
+3. Colima 4GB→2GB
+4. CASE nocturno (crons)
+5. iPhone setup (Fase 3)
+6. Storage pipeline (restic)
+7. GEEKOM 32GB (sept)
+8. Portfolio factory
+9. Purple team autónomo
