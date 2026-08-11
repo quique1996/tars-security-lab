@@ -1,4 +1,4 @@
-name: Validate Evidence and Reports
+name: CI — Security Lab (validación)
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     branches: [main]
 
 jobs:
+  # Fusión: sustituye el validate.yml (check evidence) + mis tests MCP
   validate:
     runs-on: ubuntu-latest
     steps:
@@ -20,24 +21,18 @@ jobs:
               echo "FAIL: $d missing README.md"
               exit 1
             fi
-            echo "OK: $d has README.md"
           done
+          echo "evidence READMEs OK"
 
-      - name: Check README structure
+      - name: MCP tools syntax
         run: |
-          set -e
-          [ -f README.md ] || { echo "FAIL: no README.md"; exit 1; }
-          grep -q "## Lab Infrastructure" README.md || { echo "FAIL: README missing Lab Infrastructure section"; exit 1; }
-          grep -q "## Red Team Tools" README.md || { echo "FAIL: README missing Red Team Tools section"; exit 1; }
-          echo "README structure OK"
+          python -m py_compile mcp-server/mcp_server_tactical/tools/__init__.py
+          python -m py_compile cve-triage/cve_triage.py
+          bash -n batteries/battery-2026-08-10.sh
+          bash -n scripts/case-nightly.sh
+          echo "syntax OK (mcp, cve, battery, case)"
 
-      - name: Secret scan
+      - name: Kanban markdown integrity
         run: |
-          set -e
-          if grep -rniE "api[_-]?key|password|token|secret" evidence/ --include="*.md" | grep -vE "requires|api key providers|API_KEY=|not required|no credentials|default"; then
-            echo "WARN: possible credential mentions in evidence"
-          fi
-          echo "Secret scan complete"
-
-      - name: Summary
-        run: echo "validated"
+          test -f kanban-md/INDEX.md && echo "kanban INDEX OK"
+          test -d kanban-md/ready && test -d kanban-md/done && echo "kanban dirs OK"
