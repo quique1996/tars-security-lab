@@ -169,3 +169,34 @@ Wazuh detecta → n8n alerta → CASE investiga → reporte ATLAS → KG → pus
 7. GEEKOM 32GB (sept)
 8. Portfolio factory
 9. Purple team autónomo
+
+---
+
+## 7. Benchmark Judge (verificado 2026-08-10, mismo prompt temp=0)
+
+| Modelo | tok/s | total | Mapping | Veredicto |
+|---|---|---|---|---|
+| **ornith:9b** | **16.7** | 30.5s | T1506 Prompt Injection/Identity Hijacking (LLM-specific) ✅ | **GANA** |
+| qwen3:14b | 11.1 | 518s (load lento) | T1078.001 Access Token Manipulation (clásico, menos preciso) | pierde |
+
+**Decisión judge**: ornith:9b es el judge local PRIMARIO (rápido + mapping LLM-specific correcto). qwen3-14B opcional de noche. CASE usa cloud glm-5.2 primero, fallback local ornith.
+
+## 8. Señales externas (X/Brave, 2026-08-10) — 3 fotos analizadas
+
+### Xirp (Spotify) — validación de patrón
+- Vendor-neutral agentic dev environment: maneja sesiones Claude/Gemini/Codex juntas, 1,300 ingenieros, "switch models mid-task, route every job to best price/performance"
+- **Lección**: ya hacemos routing por precio/performance (2× Ollama Pro + fallbacks). Xirp NO aplica directo (usamos Hermes+Ollama, no Claude/Codex/Gemini). Validación del patrón, no herramienta nueva.
+
+### Hermes Pixel Office (Teknium) — visualización de agentes
+- Hermes corriendo con visualización pixel-art de agentes (3 agentes visibles, sesiones, progreso)
+- **Oportunidad**: plugin Pixel para Hermes = demo visual para portfolio. Verificar en hermes-agent repo/plugins.
+
+### Mac Studio remoto vía SSH (Iñaki) — validación de arquitectura
+- "Infra para agents 24/7, single server accesible desde cualquier device incluso móvil, pseudo-sandboxed"
+- **Lección**: EXACTAMENTE nuestro plan (TARS + SSH + Telegram). El iPhone vía Telegram ya cubre "acceso desde móvil". Validación, no cambio.
+
+## 9. Qué agregar (decisiones)
+
+1. **Judge**: ornith primario local (benchmark), glm-5.2 cloud primario global. 14B queda para fine-tuning futuro.
+2. **Pixel plugin**: evaluar instalación (demo visual portfolio). PENDIENTE verificar disponibilidad.
+3. **Xirp/MacStudio**: no son herramientas nuevas — validan nuestro diseño. Documentado para portfolio (referencias industria).
