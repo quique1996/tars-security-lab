@@ -28,47 +28,11 @@ ssh -o ConnectTimeout=10 "$GEEKOM" 'bash /tmp/battery-2026-08-10.sh > /tmp/batte
 scp -o ConnectTimeout=10 "$GEEKOM:/tmp/battery-results.json" /tmp/case-battery-$STAMP.json 2>/dev/null || log "scp battery FAIL"
 
 # 3. Judge + KG (Mini, con resultados de batería)
-# Judge: cloud (glm-5.2) PRIMERO — no compite con uso diurno ni con benchmark local.
-# Fallback: local (qwen3:14b o ornith) si cloud falla.
+# Usa case_judge.py separado (evita bugs de heredoc/escaping del shell)
 log "[3/5] Judge + KG (Mini)..."
 scp -o ConnectTimeout=10 /tmp/case-battery-$STAMP.json "$MINI:/tmp/battery-results.json" 2>/dev/null
-ssh -o ConnectTimeout=10 "$MINI" 'export PATH=/opt/homebrew/bin:$PATH; cd ~/Projects/tars-security-lab/mcp-server && source .venv/bin/activate && python3 - <<PY
-import json, sys, datetime
-sys.path.insert(0, ".")
-from mcp_server_tactical.tools import atlas_map, kg_ingest, report_gen
-from mcp_server_tactical.tools import llm_judge
-import urllib.request
-
-try:
-    cases = json.load(open("/tmp/battery-results.json"))
-    findings = []
-    for c in cases:
-        if c.get("verdict") in ("LEAK","PROBE"):
-            findings.append({"model": c["model"], "test": c["test"], "label": c["label"],
-                "severity": "high" if c["verdict"]=="LEAK" else "medium",
-                "technique": c["label"], "finding": f"{c[\"model\"]} {c[\"verdict\"]}: {c.get(\"hint\",\"\")}",
-                "evidence": c.get("response","")[:200]})
-    mapped = atlas_map(findings)["mapped"]
-    for m in mapped:
-        kg_ingest(m["model"], "vulnerable_to", m["technique"], f"case-{datetime.date.today().isoformat()}")
-    # Judge: intenta cloud glm-5.2, fallback local ornith
-    judge_out = {"model": "none", "note": "no judge"}
-    try:
-        import json as _j, urllib.request as _u
-        payload = _j.dumps({"model": "glm-5.2:cloud", "prompt": "Clasifica hallazgos: " + _j.dumps(findings)[:1500], "stream": False}).encode()
-        req = _u.Request("http://127.0.0.1:11434/api/generate", data=payload, headers={"Content-Type": "application/json"})
-        with _u.urlopen(req, timeout=60) as r:
-            judge_out = {"model": "glm-5.2:cloud", "response": _j.loads(r.read()).get("response","")[:1500]}
-    except Exception as e:
-        try:
-            judge_out = llm_judge(_j.dumps(findings)[:1500], "OWASP LLM Top10 + agentic")
-        except Exception as e2:
-            judge_out = {"model": "none", "note": f"cloud+local fail: {e2}"}
-    r = report_gen(f"case-{datetime.date.today().isoformat()}", mapped, judge_out)
-    print("REPORT:", r.get("path"), "| judge:", judge_out.get("model"))
-except Exception as e:
-    print("JUDGE_FAIL:", e)
-PY' 2>&1 | tail -3 || log "judge/KG FAIL"
+scp -o ConnectTimeout=10 "$REPO/scripts/case_judge.py" "$MINI:/tmp/case_judge.py" 2>/dev/null
+ssh -o ConnectTimeout=10 "$MINI" 'export PATH=/opt/homebrew/bin:$PATH; cd ~/Projects/tars-security-lab/mcp-server && source .venv/bin/activate && python3 /tmp/case_judge.py' 2>&1 | tail -3 || log "judge/KG FAIL"
 
 # 4. Traer reportes a Air + push
 log "[4/5] Sync reportes + push..."
