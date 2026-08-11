@@ -375,3 +375,43 @@ routing multi-model (2×Ollama Pro), terminal remota (SSH+Telegram), dev 24/7 (C
 
 ### Teknium (lead engineer Hermes) — lección
 Publica como "mejoras" lo que ya está en v0.20.0. **La fuente primaria es el repo + docs**, no X. Verificar features en skill hermes-agent antes de asumir que faltan.
+
+---
+
+## 19. Hermes v0.20.0 "Herald" — TODO lo que trae y NO usamos (verificado)
+
+Ya corremos v0.20.0 en Air y Mini — pero NO usamos las features del release:
+
+| Feature del release | Qué da | Estado |
+|---|---|---|
+| **Conversational Voice** | Streaming TTS, barge-in, wake words on-device, hands-free | NO usado — configurar TTS (edge gratis) para CASE/briefings |
+| **A2A v1.0** (Agent2Agent) | Protocolo entre agentes — Mini ↔ GEEKOM ↔ Air como agentes que hablan | NO usado — es EXACTAMENTE nuestro multi-nodo |
+| **Desktop Plugin SDK** | Plugin SDK + Kanban como plugin fundador + ctx.download + floating panes | 0 plugins instalados |
+| **Kanban para Desktop GUI** | Tablero en la app | NO usado — kanban solo CLI/SQLite |
+| **Outbound Webhooks** | Eventos → webhooks (alerts) | NO usado — conectar Wazuh → webhook → Telegram |
+| **Artifacts** | Tarjetas versionadas con live preview (HTML/apps) en right-rail | NO usado — demos portfolio en el Desktop |
+| **Grounded citations** | Citas verificables | NO usado — bueno para writeups |
+| **Checkpoints v2** | Pruning real | NO usado |
+| **iron-proxy firewall** | Proxy seguro | NO usado |
+| **xurl skill** | X API CLI oficial (OAuth 2.0 PKCE auto-refresh) | ✅ Instalado — configurar para buscar X sin 402 |
+| **Token efficiency** | Mejoras masivas (PRs read tool de Teknium) | Automático — ya en v0.20.0 |
+
+### Teknium = lead engineer Hermes — lo que publica/repostea (verificado)
+- **Herald Release** (v0.20.0): voice, A2A, plugins+kanban desktop, webhooks, perf tokens
+- **Read tool PRs** (3): -79% tok FIFO guard, -48% unicode retry, -18% past-EOF
+- **X API CLI skill** (`/xurl <prompt>`): búsqueda X sin 402
+- **Voice chats más rápidos**: streaming TTS
+- **Memory multi-level**: "remembers what it learns, persistent dedicated machine"
+
+### PLAN v12 — explotar Herald (lo más grande hasta ahora)
+
+1. **A2A v1.0**: conectar Mini ↔ GEEKOM ↔ Air como agentes A2A (en vez de SSH manual)
+2. **Voice (TTS)**: CASE habla el resumen — "reemplaza google home" según Teknium
+3. **Desktop plugins**: Kanban GUI + plugin monitoreo nodos
+4. **xurl**: configurar OAuth → búsqueda X sin 402
+5. **Webhooks outbound**: Wazuh → webhook → Telegram
+6. **Artifacts**: demos portfolio en Desktop
+7. **Grounded citations**: writeups con citas verificables
+8. **iron-proxy**: usar como capa segura
+
++ CASE (hoy 23:00), CI/CD, guardrails, jcode, iMac, n8n (buzz de blocks — el AI Agent node es el bloque #1 en 2026)
