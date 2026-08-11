@@ -328,3 +328,50 @@ routing multi-model (2×Ollama Pro), terminal remota (SSH+Telegram), dev 24/7 (C
 6. **CASE nocturno** (ya cronizado)
 7. **CI/CD promptfoo+garak**
 8. **Guardrails (LlamaFirewall/NeMo)** — blue team agentes
+
+---
+
+## 18. Hermes — INVENTARIO COMPLETO de lo que tenemos y NO usamos (verificado)
+
+### Lo que YA usamos (activo en config)
+- memory (holographic) + fact_store + session_search + skills (470)
+- terminal, files, browser (incl. browser_use), mcp (25 servers)
+- cron (case-nightly), kanban (190 tasks), delegation (subagentes)
+- model_routing (kimi code, glm agentic)
+- toolsets: hermes-cli, mcp, browser, files
+
+### Lo que Hermes ofrece y NO estamos usando (inventario verificado)
+
+| Feature | Qué da | Acción |
+|---|---|---|
+| **Browser Use mode** | 1 script por flujo web (browser_use CLI) — PortSwigger labs sin sesión humana | **#1 prioridad** |
+| **computer_use** (cua-driver) | Control GUI de escritorio — ya lo tengo en tools pero no lo usamos para labs | Activar para labs con GUI |
+| **code_execution** | Python sandboxed — execute_code ya disponible | Usar más (evita SSH para análisis) |
+| **coding toolset** | LSP-backed edits | Activar para coding |
+| **x_search** | X (Twitter) search via OAuth — **el MCP xapi dio 402** | Configurar OAuth de X para buscar sin créditos |
+| **context_engine** | Pluggable context hooks | Evaluar |
+| **curator** | Skill lifecycle automático | Activar consolidate |
+| **checkpoints** | Max 50 snapshots | Activar para rollback |
+| **stt/tts** | Voice input/output | Configurar TTS (edge gratis) para briefings de voz |
+| **dashboard** (`hermes dashboard`) | Web admin panel + chat embedded | Abrir y monitorear nodos |
+| **proxy** (`hermes proxy`) | OpenAI-compatible local proxy | Conectar jcode/opencode a Ollama cloud sin API key |
+| **ACP server** | IDE integration (VS Code/Zed/JetBrains) | Activar si editas en IDE |
+| **Skins/TUI widgets/Desktop plugins** | 0 instalados | Demo visual portfolio |
+| **Event hooks** | Custom code en lifecycle (alerts, webhooks) | Alertas a Telegram en eventos |
+| **kanban dispatcher** | Multi-profile workers automáticos | **Desbloquear**: asignar tareas ready a perfiles (Mini=researcher, GEEKOM=security) |
+
+### Plan v11 — explotar la superficie
+
+1. **Browser Use → PortSwigger labs** (1 script por lab, sin sesión humana)
+2. **x_search con OAuth** — buscar X sin 402
+3. **Kanban dispatcher**: 63 ready → perfiles automáticos (Mini researcher, GEEKOM security)
+4. **Curator consolidate** — skills limpias automáticamente
+5. **TTS para CASE**: resumen de voz en Telegram
+6. **Dashboard** — panel de nodos
+7. **Proxy Hermes** — jcode/opencode conectados a Ollama cloud
+8. **Skins/TUI widgets** — demo visual portfolio
+9. **Event hooks** — alertas en lifecycle
+10. Todo lo anterior (CASE, CI/CD, guardrails, iMac)
+
+### Teknium (lead engineer Hermes) — lección
+Publica como "mejoras" lo que ya está en v0.20.0. **La fuente primaria es el repo + docs**, no X. Verificar features en skill hermes-agent antes de asumir que faltan.
