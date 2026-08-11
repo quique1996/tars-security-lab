@@ -1,0 +1,9 @@
+### Request 1 — GET https://abc123.web-security-academy.net/ (root)
+
+User-Agent: t
+
+### Response 1 — HTTP 200
+
+Congratulations, you solved the lab!
+
+========================================================================
