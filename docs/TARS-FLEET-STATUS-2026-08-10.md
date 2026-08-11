@@ -200,3 +200,38 @@ Wazuh detecta → n8n alerta → CASE investiga → reporte ATLAS → KG → pus
 1. **Judge**: ornith primario local (benchmark), glm-5.2 cloud primario global. 14B queda para fine-tuning futuro.
 2. **Pixel plugin**: evaluar instalación (demo visual portfolio). PENDIENTE verificar disponibilidad.
 3. **Xirp/MacStudio**: no son herramientas nuevas — validan nuestro diseño. Documentado para portfolio (referencias industria).
+
+---
+
+## 10. Investigación X/herramientas exponentes (2026-08-10, Brave)
+
+### Qué QUITAMOS (no sirve / duplicado)
+| Item | Razón |
+|---|---|
+| qwen3:14b como judge principal | Perdió benchmark (11.1 tok/s, T1078 clásico vs ornith T1506). **Queda solo para fine-tuning futuro** |
+| Xirp (Spotify) | No aplica: usa Claude/Codex/Gemini, nosotros usamos Hermes+Ollama. Validación de patrón, no herramienta |
+| MacStudio remoto (Iñaki) | Ya lo hacemos con TARS+SSH+Telegram. Validación, no cambio |
+| LLM local en iPhone | Telegram a TARS lo resuelve mejor (glm-5.2 cloud). Solo PocketPal opcional offline |
+
+### Qué AGREGAMOS (herramientas exponentes verificadas)
+| Herramienta | Qué hace | Estado nuestro | Acción |
+|---|---|---|---|
+| **garak v0.16.0** (NVIDIA) | Scanner LLM, 120+ probes | ✅ Ya en GEEKOM | Usar en CASE (ya en ai-redteam semanal) |
+| **PyRIT** (Microsoft) | Explotación multi-turno dinámica | ✅ Evidencia ya existe (2026-08-07) | Integrar a batería CASE |
+| **promptfoo** | CI/CD red teaming, YAML configs | ✅ Configs en repo | Pipeline CI GitHub Actions |
+| **DeepTeam** (Apache-2.0) | Red team LLM OWASP+NIST | ⏳ Kanban ready (t_0dc4cf4d, t_a045d828) | Implementar en GEEKOM |
+| **Inspect** (Microsoft) | Framework evaluación seguridad | ❌ No | Evaluar |
+| **Lakera/HiddenLayer/Mindgard** | Plataformas comerciales | ❌ No (costo) | Referencias portfolio/entrevistas |
+
+### Lección clave (investigación)
+El stack que YA tenemos (garak + PyRIT + promptfoo + DeepTeam en kanban) **es el top-3 open source de 2026**. No falta herramienta — falta **ejecutarlas en pipeline CI/CD** (promptfoo en GitHub Actions) y documentar. Las comerciales (Lakera/HiddenLayer) son para saberlas nombrar en entrevistas, no para comprar.
+
+## 11. Plan actualizado (v7)
+
+### Prioridades (cambiaron con la investigación)
+1. **Pipeline CI/CD**: promptfoo + garak en GitHub Actions (portfolio profesional + automatiza evidencia)
+2. **DeepTeam en GEEKOM** (kanban ready): red team LLM OWASP+NIST — más cobertura que garak solo
+3. **CASE nocturno** (ya cronizado): sigue su curso, ahora con garak+PyRIT como baterías
+4. **Fine-tuning 14B** (semana 2): ornith gana judge, 14B liberado para LoRA
+5. **iMac** (cuando estés en casa): Fase 0 — migrar Qdrant/KG/selfhosted
+6. **Pixel plugin Hermes**: evaluar demo visual portfolio
