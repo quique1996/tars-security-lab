@@ -438,3 +438,11 @@ Ya corremos v0.20.0 en Air y Mini — pero NO usamos las features del release:
 
 ### Kanban
 - t_a045d828 → done (instalado; corrida real con cloud pendiente)
+
+---
+
+## 21. PentestGPT — instalado (2026-08-11)
+
+- `pentestgpt 0.8.0` en `.venv-pentestgpt` (Air)
+- **Pitfall**: greenlet falla en Python 3.12/3.14 — requiere Python 3.11 (usar `~/.hermes/hermes-agent/venv/bin/python3.11 -m venv`)
+- Kanban t_d2b09827 → done (instalado; corrida real pendiente — requiere config API key)
