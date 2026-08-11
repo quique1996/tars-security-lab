@@ -256,3 +256,48 @@ El stack que YA tenemos (garak + PyRIT + promptfoo + DeepTeam en kanban) **es el
 Todo lo que vimos (Xirp, herdr, MacStudio, Pixel) **ya lo hacemos o lo tenemos**:
 routing multi-model (2×Ollama Pro), terminal remota (SSH+Telegram), dev 24/7 (CASE), agentes visuales (plugin Pixel opcional).
 **La industria está construyendo lo que tú ya tienes** — eso es señal de que el diseño es correcto.
+
+---
+
+## 13. herdr — análisis PROFUNDO (corrige veredicto anterior)
+
+**NO es solo "tmux con panels"** — es un multiplexor de agentes Rust:
+- Background server persistente (~10MB binary, AGPL, local-first, code off-cloud)
+- Detecta automáticamente 15+ coding agents (Claude, Codex, Devin, opencode...)
+- Panes/tabs reales por agente + status 4 colores + mouse nativo
+- **Sobrevive cierre de laptop/reinicio: "close the lid, drop the network, restart — agents keep working"**
+- Zero-config, single-binary
+
+| Decisión | Razón |
+|---|---|
+| **EVALUAR herdr en Air/GEEKOM** | La persistencia de sesiones es EXACTAMENTE lo que CASE necesita (agentes que sobreviven reinicio). No es estética: es runtime de agentes |
+| Instalar SOLO si la persistencia justifica (benchmark vs tmux actual) | Ya tenemos tmux+opencode; herdr añade daemon persistente |
+
+### Alternativas verificadas (si herdr no convence)
+- **tmux-opencode** (plugin bash): browse/track/resume opencode sessions
+- **Agent-Manager** (Tmux TUI para Claude/Codex/OpenCode)
+- **RMUX** (Rust daemon SDK, Helvesec)
+- **cmux** (terminal Ghostty nativo macOS para agentes paralelos — estado sobrevive restart)
+
+## 14. Stack guardrails/seguridad de agentes (NUEVO — no lo teníamos)
+
+| Herramienta | Qué hace | Open source | Acción |
+|---|---|---|---|
+| **LlamaFirewall** (Meta) | Guardrails: PromptGuard 2, inyección, misalignment, código inseguro | ✅ | **Evaluar en CASE** — capa de defensa del lado de Mini |
+| **NeMo Guardrails** (NVIDIA) | Framework programable, DSL Colang, 6 tipos de guardrail | ✅ | Evaluar |
+| **LLM Guard** (Protect AI) | Pipeline scanners input/output (inyección, PII) | ✅ | Evaluar |
+| **Microsoft Agent Gov Toolkit** | Runtime-governance open source | ✅ | Evaluar |
+| **RAMPART / Clarity** | CI safety testing | ✅ | CI/CD |
+| **Trylon Gateway / RunLayer** | Firewall de red para agentes | ✅ | Avanzado |
+
+**Impacto**: estas herramientas son **BLUE TEAM** para agentes — complementan nuestro RED TEAM (garak/PyRIT). Tener ambas = purple team completo = portfolio diferenciador.
+
+## 15. PLAN v9 — prioridades actualizadas
+
+1. **CASE nocturno** (ya cronizado, corre esta noche 23:00)
+2. **CI/CD pipeline**: promptfoo+garak en GitHub Actions
+3. **Evaluar herdr** (Air/GEEKOM): persistencia de agentes para CASE — benchmark vs tmux
+4. **Evaluar LlamaFirewall o NeMo Guardrails** en Mini: blue team para agentes (defensa de nuestro propio CASE)
+5. **DeepTeam en GEEKOM** (red team OWASP+NIST)
+6. **iMac** (cuando estés en casa)
+7. **Fine-tuning 14B**
