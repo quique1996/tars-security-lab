@@ -301,3 +301,30 @@ routing multi-model (2×Ollama Pro), terminal remota (SSH+Telegram), dev 24/7 (C
 5. **DeepTeam en GEEKOM** (red team OWASP+NIST)
 6. **iMac** (cuando estés en casa)
 7. **Fine-tuning 14B**
+
+---
+
+## 16. Hermes subutilizado — auditoría de superficie (verificado)
+
+| Superficie | Estado | Oportunidad |
+|---|---|---|
+| **Browser Use mode** | ✅ ACTIVADO (`browser/browser_use`) | **PortSwigger/bug bounty**: un script para todo el flujo, no tool call por click — resuelve labs sin sesión humana manual |
+| **25 MCP servers** | ⚠️ Configurados | Auditar cuáles activos + conectar qdrant/tactical |
+| **Plugins desktop** | ❌ 0 | UI plugins (pane de monitoreo nodos) |
+| **Skins** | ❌ 0 (solo default) | Demo visual portfolio (tema dark-luxury/hacker) |
+| **TUI widgets** | ❌ 0 | Widgets en vivo (load nodos, alertas Wazuh) |
+| **Desktop plugins** | ❌ 0 | Cmd+K commands, panes |
+| **Pets** | ✅ 4 | Estética — ok |
+
+**Lección (fotos 6-8 + auditoría)**: Hermes ya trae lo que las fotos muestran como "nuevo" (Browser Use = foto 8, read tool = foto 7, agentes paralelos = foto 6). No usamos la superficie.
+
+## 17. PLAN v10 — Hermes-centric
+
+1. **Browser Use para PortSwigger**: resolver labs con 1 script (sin sesión humana por lab)
+2. **Skins + TUI widgets**: demo visual portfolio (hacker terminal look sin herdr)
+3. **Plugin desktop monitoreo**: pane de nodos en Hermes Desktop
+4. **Auditar 25 MCP**: conectar tactical + qdrant de forma activa
+5. **Jcode**: EVALUAR como harness alternativo (20x memory-efficient, Rust, swarms) — para Air 8GB
+6. **CASE nocturno** (ya cronizado)
+7. **CI/CD promptfoo+garak**
+8. **Guardrails (LlamaFirewall/NeMo)** — blue team agentes
