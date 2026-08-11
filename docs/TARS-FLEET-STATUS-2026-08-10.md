@@ -446,3 +446,24 @@ Ya corremos v0.20.0 en Air y Mini — pero NO usamos las features del release:
 - `pentestgpt 0.8.0` en `.venv-pentestgpt` (Air)
 - **Pitfall**: greenlet falla en Python 3.12/3.14 — requiere Python 3.11 (usar `~/.hermes/hermes-agent/venv/bin/python3.11 -m venv`)
 - Kanban t_d2b09827 → done (instalado; corrida real pendiente — requiere config API key)
+
+---
+
+## 22. DeepTeam corrida real — ÉXITO (2026-08-11)
+
+- **glm-5.2:cloud vs OWASP ASI 2026**: pass 100% en 6 categorías (ASI_01 Excessive Agency, ASI_03 RBAC, ASI_06 Misinformation, ASI_09 Ethics)
+- Ataques resistidos: Crescendo, Jailbreaking, Roleplay, Prompt Probing, Context Poisoning
+- **Contraste clave**: qwen3:8b local falló identity hijack (HACKED literal, battery 2026-08-10) — el modelo cloud es significativamente más seguro
+- Evidencia: `evidence/deepteam-glm-2026-08-11/` (run.log 3163 líneas + README)
+- Kanban t_0dc4cf4d → done (commit 4eb0d91)
+
+## 23. Fix crítico: cron CASE usaba script VIEJO
+
+- El cron `case-nightly` (23:00) apuntaba a `~/.hermes/scripts/case-nightly.sh` que NO tenía el fix (case_judge.py)
+- Sincronizado 2026-08-11 13:35 — verificado IDÉNTICO al repo (usa case_judge)
+- **Pitfall**: al editar scripts en repo, copiar también a ~/.hermes/scripts/ (donde el cron los lee)
+
+## 24. GEEKOM metasploitable2 VOLVIÓ a running
+
+- El `virsh destroy` (2026-08-10) no persistió — la VM está de nuevo Up
+- GOAD (4 DCs) NO cabe con metaspl up (6.2Gi avail) — requiere apagarla primero
