@@ -69,7 +69,8 @@ def kg_ingest(entity: str, relation: str, target: str, provenance: str) -> dict[
     if not kg_path.exists():
         return {"ok": False, "error": f"KG not found: {kg_path}"}
 
-    backup = kg_path.with_suffix(f".bak-{provenance.replace('/', '-')}")
+    # Backup previo con nombre estándar <file>.bak-<provenance> (conserva .json)
+    backup = Path(str(kg_path) + f".bak-{provenance.replace('/', '-')}")
     backup.write_bytes(kg_path.read_bytes())
 
     data = json.loads(kg_path.read_text())
