@@ -235,3 +235,24 @@ El stack que YA tenemos (garak + PyRIT + promptfoo + DeepTeam en kanban) **es el
 4. **Fine-tuning 14B** (semana 2): ornith gana judge, 14B liberado para LoRA
 5. **iMac** (cuando estés en casa): Fase 0 — migrar Qdrant/KG/selfhosted
 6. **Pixel plugin Hermes**: evaluar demo visual portfolio
+
+---
+
+## 12. Las 5 fotos completas (2026-08-10) — análisis final
+
+### Fotos 1-3 (ya documentadas): Xirp, Hermes Pixel, MacStudio — validan patrón
+### Fotos 4-5 (NUEVAS): herdr (Ben Vinegar + Mr Panda)
+
+**herdr** = "instant hacker terminal" (curl herdr.dev/install.sh | sh, panels CPU/MEM/NET/DISK/TACTICAL RADAR).
+**Lección de Ben Vinegar**: "95% of what it offers was already out there" (tmux + opencode + themes).
+
+| Decisión | Razón |
+|---|---|
+| NO instalar herdr como dependencia | Ya tenemos tmux + opencode (skill) + tui-widgets (skill). 95% es estética |
+| Opcional: replicar look con tui-widgets | Demo visual de portfolio "hacker terminal" en Air |
+| opencode ya cubierto | Skill `opencode` instalada (delegar coding a OpenCode CLI) |
+
+### Lección transversal (las 5 fotos)
+Todo lo que vimos (Xirp, herdr, MacStudio, Pixel) **ya lo hacemos o lo tenemos**:
+routing multi-model (2×Ollama Pro), terminal remota (SSH+Telegram), dev 24/7 (CASE), agentes visuales (plugin Pixel opcional).
+**La industria está construyendo lo que tú ya tienes** — eso es señal de que el diseño es correcto.
