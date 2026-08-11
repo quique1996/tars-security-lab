@@ -101,7 +101,19 @@ f3b7c34 migrate-qdrant-to-imac playbook
 
 ---
 
-## 4. Plan Maestro v3 (aprobado en progreso)
+## 3b. Modelos Ollama Cloud — ranking verificado (Brave, ago 2026)
+
+| Modelo | Score | Mejor para | Uso |
+|---|---|---|---|
+| GLM-5.2 (Z.ai) | 87 | Agentic, long-horizon | CASE nocturno, orquestación |
+| Kimi K2.7 Code | 86 | Coding, SWE-Bench | Subagentes payloads, writeups |
+| MiniMax M3 | — | Creative, copy | Blog posts |
+| qwen3-coder:30b | fuerte | Coding local | GEEKOM sept (32GB) |
+| deepseek-v4-fl | cloud | General | Fallback |
+
+Stack actual ya es top-3 2026. Patrón subagentes AWS 2026: RECON (glm-5.2) → EXPLOIT (kimi) → REPORT (glm-5.2), paralelo dominio fijo.
+
+## 4. Plan Maestro v5 (aprobado en progreso)
 
 ### Fase 0 — Hoy (en curso)
 - ✅ Twenty apagado, 14B descargado, playbook iMac listo
