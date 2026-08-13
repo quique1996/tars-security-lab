@@ -8,12 +8,12 @@
 
 | Estado | Count | Directorio |
 |--------|-------|------------|
-| done | 98 | `done/` |
-| ready | 63 | `ready/` |
+| done | 103 | `done/` |
+| ready | 55 | `ready/` |
 | blocked | 13 | `blocked/` |
 | scheduled | 3 | `scheduled/` |
-| archived | 13 | `archived/` |
-| **total** | **190** | — |
+| archived | 21 | `archived/` |
+| **total** | **195** | — |
 
 ## Ready — prioridad (top 15 por priority desc)
 
