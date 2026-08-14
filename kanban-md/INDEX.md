@@ -8,9 +8,9 @@
 
 | Estado | Count | Directorio |
 |--------|-------|------------|
-| done | 103 | `done/` |
-| ready | 55 | `ready/` |
-| blocked | 13 | `blocked/` |
+| done | 107 | `done/` |
+| ready | 50 | `ready/` |
+| blocked | 14 | `blocked/` |
 | scheduled | 3 | `scheduled/` |
 | archived | 21 | `archived/` |
 | **total** | **195** | — |

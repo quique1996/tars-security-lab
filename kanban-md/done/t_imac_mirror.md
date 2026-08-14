@@ -1,6 +1,6 @@
 ---
 id: t_imac_mirror
-status: ready
+status: done
 priority: medium
 assignee: tars
 created: 2026-08-12

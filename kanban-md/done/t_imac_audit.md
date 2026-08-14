@@ -1,6 +1,6 @@
 ---
 id: t_imac_audit
-status: ready
+status: done
 priority: high
 assignee: tars
 created: 2026-08-12

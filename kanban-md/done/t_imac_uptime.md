@@ -1,6 +1,6 @@
 ---
 id: t_imac_uptime
-status: ready
+status: done
 priority: low
 assignee: tars
 created: 2026-08-12
