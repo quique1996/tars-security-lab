@@ -1,7 +1,7 @@
 # KG: estado OPTIMO confirmado - 8386 entidades/10943 rel/1558 conexiones cruzadas entre dominios
 
 - id: t_d213e9aa
-- status: ready
+- status: archived
 - priority: 1
 - assignee: unassigned
 - created: 2026-08-10T10:33:19
