@@ -8,16 +8,32 @@
 
 | Estado | Count | Directorio |
 |--------|-------|------------|
-| done | 113 | `done/` |
-| ready | 47 | `ready/` |
-| blocked | 24 | `blocked/` |
-| scheduled | 3 | `scheduled/` |
-| archived | 18 | `archived/` |
-| **total** | **205** | — |
+| done | 117 | `done/` |
+| ready | 40 | `ready/` |
+| blocked | 23 | `blocked/` |
+| scheduled | 2 | `scheduled/` |
+| archived | 22 | `archived/` |
+| **total** | **204** | — |
 
 ## Ready — prioridad (top 15 por priority desc)
 
 | ID | Título |
+|----|--------|
+| t_fbf63ade | Asta — agente IA resuelve labs GEEKOM |
+| t_78a9de0a | BLACK: DVWA/SQLi en Asta + tuneles persistentes |
+| t_7de8450f | KG: ingesta cvelistV5 (GitHub) |
+| t_fda03ab0 | KG: ingesta 1253 Sigma rules |
+| t_e2b9388e | KG: tipar 1540 entidades |
+| t_b8ce42c9 | KG: conexiones entre dominios (kg-connector.py) |
+| t_140af872 | KG: MITRE ATT&CK + ATLAS backbone |
+| t_27452059 | AMB: Elastic Security 2do SIEM |
+| t_82d55096 | AMB: AI SOC triage automation |
+| t_7ab72c8d | PURPLE: Full-MITRE campaign + VECTR |
+| t_9f462d52 | RED: Sliver C2 contra VMs |
+| t_8fea4970 | AMB: Payload mutante con Ollama |
+| t_98a36275 | AMB: CAPE Sandbox malware |
+| t_a501a90b | 3TB: CVE triage LLM |
+| t_f5739596 | HERMES: Desktop plugin ecosistema |
 |----|--------|
 | t_107a8dc6 | KG: expansion masiva +1001 (math/stats/econ/prob/biohack/bio) |
 | t_d213e9aa | KG: estado OPTIMO confirmado - 8386 entidades/10943 rel |
