@@ -2,15 +2,15 @@
 
 Resolución autónoma de challenges de Juice Shop vía solver automatizado en GEEKOM.
 
-**Estado: 46/109 challenges resueltos** (42% — actualizado 2026-08-12)
+**Estado: 15/109 challenges resueltos** (14% — actualizado 2026-08-14, verificado via /api/challenges)
 
 ## Resumen
 
 | Métrica | Valor |
 |---------|-------|
 | Challenges totales | 109 |
-| Resueltos | 46 |
-| Writeups | 45 |
+| Resueltos (verificados API) | 15 |
+| Writeups (documentados) | 45 |
 | Nodo | GEEKOM (100.123.17.12) |
 | Método | Solver Python (`juiceshop-solver.py`) + Playwright |
 
