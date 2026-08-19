@@ -40,6 +40,12 @@ AI red teaming and cybersecurity lab running on a multi-node Tailscale fleet.
 - **Sigma rules**: detection engineering from SigmaHQ
 - **Atomic Red Team**: 3,869 atomic tests mapped to MITRE ATT&CK
 
+## Documentation (curso nivel 1)
+
+- **Wazuh architecture**: `docs/WAZUH-ARCHITECTURE-2026-08-19.md` — capa de detección, reglas custom, purple loop
+- **Attack chains**: `docs/ATTACK-CHAINS-2026-08-19.md` — AD Kerberoast, Agentic AI Red Team, Purple loop
+- **Prompt injection findings**: `docs/PROMPT-INJECTION-FINDINGS-2026-08-19.md` — findings consolidados multi-herramienta
+
 ## Roadmap
 - [x] Wazuh 4/4 agents active
 - [x] PyRIT verified working
